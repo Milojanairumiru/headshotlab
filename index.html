@@ -4245,7 +4245,7 @@
         orderForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           const nameInput = document.getElementById('orderClientName') ? document.getElementById('orderClientName').value.trim() : 'Valued Client';
-          const emailInput = document.getElementById('orderClientEmail') ? document.getElementById('orderClientEmail').value.trim().toLowerCase() : 'client@headshotlab.com';
+          const emailInput = document.getElementById('orderClientEmail') ? document.getElementById('orderClientEmail').value.trim().toLowerCase() : 'client@headshotlab.us';
           const passwordInput = document.getElementById('orderClientPassword') ? document.getElementById('orderClientPassword').value : '';
           const tierSelect = orderForm.querySelector('select') ? orderForm.querySelector('select').value : 'individual';
           const isTeam = (tierSelect === 'team' || tierSelect === 'custom');
