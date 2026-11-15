@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: headshotlab
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node serve.js
+    envVars:
+      - key: NODE_VERSION
+        value: 22.14.0
+      - key: ADMIN_PASSCODE
+        value: admin123

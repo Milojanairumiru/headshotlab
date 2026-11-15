@@ -1,0 +1,4333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HEADSHOTLAB — Professional & Editorial Headshot Studio</title>
+
+  <!-- Favicon & App Icon -->
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+
+  <!-- Google Fonts: Barlow Condensed, Syne, Inter, Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CSS RESET & CUSTOM VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-primary: #F7F7F2;
+      --bg-secondary: #EBEAE4;
+      --bg-tertiary: #E1DFD7;
+      --bg-dark: #191A1D;
+      --bg-dark-card: #24252A;
+      --text-dark: #1A1B1F;
+      --text-muted: #6E7079;
+      --text-light: #F7F7F2;
+      --text-light-muted: #9DA0A8;
+      --accent-coral: #E84D3E;
+      --accent-coral-hover: #D13B2C;
+      --border-light: rgba(26, 27, 31, 0.12);
+      --border-dark: rgba(247, 247, 242, 0.12);
+      --watermark-color: rgba(26, 27, 31, 0.05);
+      --watermark-dark: rgba(247, 247, 242, 0.04);
+      --header-height: 80px;
+      --font-headline: 'Barlow Condensed', -apple-system, sans-serif;
+      --font-subhead: 'Syne', sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      color: var(--text-dark);
+      background-color: var(--bg-primary);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-color: var(--bg-primary);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* Sticky Header Offset for all sections with IDs */
+    section[id], div[id] {
+      scroll-margin-top: calc(var(--header-height) + 20px);
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
+    }
+
+    /* Watermark Typography */
+    .watermark-text {
+      position: absolute;
+      font-family: var(--font-headline);
+      font-size: clamp(6rem, 16vw, 20rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--watermark-color);
+      line-height: 0.85;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    .dark-section .watermark-text {
+      color: var(--watermark-dark);
+    }
+
+    /* Section Typography Defaults */
+    .section-title-tag {
+      display: inline-block;
+      font-family: var(--font-headline);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent-coral);
+      margin-bottom: 12px;
+    }
+
+    .editorial-h1 {
+      font-family: var(--font-headline);
+      font-size: clamp(3rem, 6.5vw, 6.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .editorial-h2 {
+      font-family: var(--font-headline);
+      font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.02;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .editorial-h3 {
+      font-family: var(--font-headline);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 32px;
+      font-family: var(--font-headline);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transition: var(--transition-smooth);
+      border-radius: 0;
+      text-align: center;
+    }
+
+    .btn-solid-dark {
+      background: var(--text-dark);
+      color: var(--text-light);
+      border: 1px solid var(--text-dark);
+    }
+
+    .btn-solid-dark:hover {
+      background: var(--accent-coral);
+      border-color: var(--accent-coral);
+      color: #fff;
+    }
+
+    .btn-outline-dark {
+      background: transparent;
+      color: var(--text-dark);
+      border: 1px solid var(--text-dark);
+    }
+
+    .btn-outline-dark:hover {
+      background: var(--text-dark);
+      color: var(--text-light);
+    }
+
+    .btn-solid-light {
+      background: var(--text-light);
+      color: var(--text-dark);
+      border: 1px solid var(--text-light);
+    }
+
+    .btn-solid-light:hover {
+      background: var(--accent-coral);
+      border-color: var(--accent-coral);
+      color: #fff;
+    }
+
+    .btn-outline-light {
+      background: transparent;
+      color: var(--text-light);
+      border: 1px solid var(--border-dark);
+    }
+
+    .btn-outline-light:hover {
+      background: var(--text-light);
+      color: var(--text-dark);
+    }
+
+    /* ==========================================================================
+       01 HEADER (STICKY NAVIGATION)
+       ========================================================================== */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--header-height);
+      background-color: transparent;
+      border-bottom: 1px solid transparent;
+      z-index: 1000;
+      transition: background-color 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .site-header.scrolled {
+      background-color: rgba(247, 247, 247, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .logo {
+      font-family: var(--font-body);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      text-transform: none;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .brand-logo-img {
+      height: 30px;
+      width: auto;
+      max-width: 195px;
+      display: block;
+      object-fit: contain;
+      transition: opacity 0.2s ease;
+    }
+
+    .brand-logo-img:hover {
+      opacity: 0.85;
+    }
+
+    .brand-logo-footer {
+      height: 32px;
+      width: auto;
+      max-width: 210px;
+      display: block;
+      object-fit: contain;
+      transition: opacity 0.2s ease;
+    }
+
+    .brand-logo-footer:hover {
+      opacity: 0.85;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #333;
+      position: relative;
+      padding: 6px 0;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background-color: #1a1a1a;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+    }
+    
+    .btn-start-project {
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    
+    .btn-start-project:hover {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .contact-header-btn {
+      font-family: var(--font-headline);
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 10px 24px;
+      background: transparent;
+      border: 1.5px solid var(--text-dark);
+      color: var(--text-dark);
+      transition: var(--transition-smooth);
+    }
+
+    .contact-header-btn:hover {
+      background: var(--text-dark);
+      color: var(--text-light);
+    }
+
+    .get-headshot-header-btn {
+      font-family: var(--font-headline);
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 10px 24px;
+      background: var(--text-dark);
+      border: 1.5px solid var(--text-dark);
+      color: var(--text-light);
+      transition: var(--transition-smooth);
+    }
+
+    .get-headshot-header-btn:hover {
+      background: var(--accent-coral);
+      border-color: var(--accent-coral);
+      color: #fff;
+    }
+
+    /* Mobile Hamburger */
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      width: 32px;
+      height: 24px;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .mobile-menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: var(--text-dark);
+      transition: var(--transition-smooth);
+    }
+
+    .mobile-menu-toggle.open span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .mobile-menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-toggle.open span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    @media (max-width: 1024px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 400px;
+        height: 100vh;
+        background-color: var(--bg-primary);
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 60px 40px;
+        gap: 24px;
+        border-left: 1px solid var(--border-light);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        transition: right 0.4s ease;
+        z-index: 1000;
+      }
+
+      .nav-links.open {
+        right: 0;
+      }
+
+      .mobile-menu-toggle {
+        display: flex;
+      }
+
+      .header-actions .get-headshot-header-btn {
+        display: none;
+      }
+    }
+
+    /* ==========================================================================
+       02 HERO SECTION (#home)
+       ========================================================================== */
+    .hero-section {
+      padding-top: calc(var(--header-height) + 10px);
+      padding-bottom: 60px;
+      background-color: #f7f7f7;
+    }
+
+    .hero-card {
+      background-color: #ebecf0;
+      border-radius: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    .hero-content {
+      padding: 60px 60px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .hero-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 4vw, 4rem);
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .hl-black {
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .hl-grey {
+      color: #999;
+      font-weight: 600;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.6;
+      max-width: 400px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-pill-dark {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 15px;
+      border: 1px solid #1a1a1a;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    }
+    
+    .btn-pill-dark:hover {
+      background: #333;
+    }
+
+    .btn-pill-light {
+      background: transparent;
+      color: #1a1a1a;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 15px;
+      border: 1px solid #dcdcdc;
+      transition: all 0.2s ease;
+    }
+
+    .btn-pill-light:hover {
+      background: #e0e0e0;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #666;
+      font-family: var(--font-body);
+    }
+
+    .hero-image-wrapper {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .hero-portrait {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: auto;
+      transform: none;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: bottom right;
+      pointer-events: none;
+    }
+
+    .hero-glass-card {
+      position: absolute;
+      bottom: 30px; right: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 30px;
+      width: 320px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      color: #fff;
+    }
+
+    .glass-subtitle {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 8px;
+    }
+
+    .glass-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .glass-desc {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.5;
+    }
+
+    .glass-btn {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      width: 48px;
+      height: 48px;
+      background: #fff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1a1a1a;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .glass-btn:hover {
+      transform: scale(1.08);
+      color: #1a1a1a;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero-logos {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 40px 20px 0;
+      color: #666;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.1rem;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-content {
+        padding: 40px 30px;
+      }
+      .hero-image-wrapper {
+        min-height: 400px;
+      }
+      .hero-glass-card {
+        bottom: 20px;
+        right: 20px;
+        width: 90%;
+        left: 5%;
+      }
+    }
+
+    /* ==========================================================================
+       03 BRAND STATEMENT SECTION
+       ========================================================================== */
+    .brand-statement-section {
+      padding: 100px 0;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      background-color: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-statement-watermark {
+      top: 5%;
+      right: -5%;
+    }
+
+    .brand-statement-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .highlight-text {
+      color: rgba(26, 27, 31, 0.4);
+      transition: color 0.3s ease;
+    }
+
+    .highlight-text:hover {
+      color: var(--text-dark);
+    }
+
+    .statement-right {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      border-left: 2px solid var(--text-dark);
+      padding-left: 30px;
+    }
+
+    @media (max-width: 860px) {
+      .brand-statement-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .statement-right {
+        border-left: none;
+        padding-left: 0;
+        border-top: 2px solid var(--text-dark);
+        padding-top: 20px;
+      }
+    }
+
+    /* ==========================================================================
+       04 WHY HEADSHOTLAB
+       ========================================================================== */
+    .why-section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .why-card {
+      background: var(--bg-secondary);
+      padding: 40px 30px;
+      border: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+      transition: var(--transition-smooth);
+    }
+
+    .why-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--text-dark);
+      background: #fff;
+    }
+
+    .why-number {
+      font-family: var(--font-headline);
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--accent-coral);
+    }
+
+    .why-card-content h3 {
+      font-family: var(--font-headline);
+      font-size: 24px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .why-card-content p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1024px) {
+      .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       05 BEFORE / AFTER SECTION
+       ========================================================================== */
+    .before-after-section {
+      padding: 120px 0;
+      background-color: var(--bg-secondary);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ba-watermark {
+      top: 10%;
+      left: 20%;
+    }
+
+    .ba-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .ba-interactive-container {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    /* Interactive Before/After Split Card */
+    .ba-slider-card {
+      position: relative;
+      width: 100%;
+      height: 540px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      user-select: none;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+      background: #000;
+    }
+
+    .ba-image-before, .ba-image-after {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .ba-image-before img, .ba-image-after img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Zero-scaling clip-path: Keeps image pinned at 100% width/height without zooming */
+    .ba-image-before {
+      z-index: 2;
+      width: 100%;
+      clip-path: inset(0 calc(100% - 50%) 0 0);
+      -webkit-clip-path: inset(0 calc(100% - 50%) 0 0);
+      will-change: clip-path;
+      border-right: none;
+    }
+
+    .ba-image-after {
+      z-index: 1;
+    }
+
+    .ba-badge-label {
+      position: absolute;
+      top: 20px;
+      padding: 8px 16px;
+      font-family: var(--font-headline);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: rgba(25, 26, 29, 0.8);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      z-index: 4;
+    }
+
+    .ba-label-before {
+      left: 20px;
+    }
+
+    .ba-label-after {
+      right: 20px;
+      background: var(--accent-coral);
+    }
+
+    .ba-handle {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      bottom: 0;
+      width: 3px;
+      background: #fff;
+      z-index: 5;
+      transform: translateX(-50%);
+      cursor: ew-resize;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .ba-handle-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      background: var(--text-dark);
+      border: 3px solid #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .ba-handle-circle svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    .ba-details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .ba-detail-item {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .ba-detail-item h4 {
+      font-family: var(--font-headline);
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ba-detail-item h4 span {
+      color: var(--accent-coral);
+      font-size: 14px;
+    }
+
+    .ba-detail-item p {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .ba-interactive-container {
+        grid-template-columns: 1fr;
+      }
+      .ba-slider-card {
+        height: 400px;
+      }
+    }
+
+    /* ==========================================================================
+       06 WORK / GALLERY SECTION (#work)
+       ========================================================================== */
+    .work-section {
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .work-watermark {
+      top: 5%;
+      right: -2%;
+    }
+
+    .gallery-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 40px 0 50px 0;
+    }
+
+    .filter-btn {
+      padding: 8px 20px;
+      font-family: var(--font-headline);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      transition: var(--transition-smooth);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--text-dark);
+      border-color: var(--text-dark);
+      color: var(--text-light);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .gallery-item {
+      position: relative;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      group: true;
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 30px 24px;
+      background: linear-gradient(to top, rgba(25, 26, 29, 0.9) 0%, rgba(25, 26, 29, 0) 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transform: translateY(10px);
+      opacity: 0.9;
+      transition: var(--transition-smooth);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .gallery-tag {
+      font-family: var(--font-headline);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-coral);
+    }
+
+    .gallery-title {
+      font-family: var(--font-headline);
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .gallery-subtitle {
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    @media (max-width: 900px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       07 HOW IT WORKS SECTION (#how-it-works)
+       ========================================================================== */
+    .how-section {
+      padding: 120px 0;
+      background-color: var(--bg-secondary);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .how-step-card {
+      background: var(--bg-primary);
+      padding: 40px 24px;
+      border: 1px solid var(--border-light);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .how-step-num {
+      font-family: var(--font-headline);
+      font-size: 56px;
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 0.9;
+    }
+
+    .how-step-card h3 {
+      font-family: var(--font-headline);
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .how-step-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1024px) {
+      .how-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .how-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       08 PHOTO GUIDE SECTION (#photo-guide)
+       ========================================================================== */
+    .guide-section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .guide-watermark {
+      top: 5%;
+      left: -2%;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .guide-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: var(--transition-smooth);
+    }
+
+    .guide-card:hover {
+      border-color: var(--text-dark);
+      background: #fff;
+    }
+
+    .guide-icon-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .guide-tag-num {
+      font-family: var(--font-headline);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent-coral);
+    }
+
+    .guide-card h3 {
+      font-family: var(--font-headline);
+      font-size: 26px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .guide-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .guide-checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .guide-checklist li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-dark);
+    }
+
+    .guide-checklist li::before {
+      content: '✓';
+      color: var(--accent-coral);
+      font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+      .guide-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .guide-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       09 PROFESSIONAL RETOUCHING (EDITORIAL SERVICE SHOWCASE)
+       ========================================================================== */
+    .retouching-section {
+      padding: 120px 0;
+      background-color: var(--bg-secondary);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    .retouch-showcase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-top: 60px;
+    }
+
+    .retouch-service-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .retouch-service-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: var(--transition-smooth);
+    }
+
+    .retouch-service-title {
+      font-family: var(--font-headline);
+      font-size: clamp(2rem, 3.2vw, 3rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(26, 27, 31, 0.4);
+      transition: var(--transition-smooth);
+    }
+
+    .retouch-service-item:hover .retouch-service-title,
+    .retouch-service-item.active .retouch-service-title {
+      color: var(--text-dark);
+      transform: translateX(10px);
+    }
+
+    .retouch-service-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .retouch-service-item.active .retouch-service-desc {
+      max-height: 100px;
+      opacity: 1;
+      margin-top: 6px;
+    }
+
+    .retouch-preview-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    }
+
+    .retouch-preview-card img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.4s ease, transform 0.6s ease;
+    }
+
+    @media (max-width: 900px) {
+      .retouch-showcase-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       10 AUTHENTICITY SECTION
+       ========================================================================== */
+    .authenticity-section {
+      padding: 100px 0;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+      text-align: center;
+    }
+
+    .auth-banner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .auth-tag-pill {
+      background: rgba(232, 77, 62, 0.1);
+      color: var(--accent-coral);
+      padding: 6px 16px;
+      font-family: var(--font-headline);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-radius: 30px;
+    }
+
+    /* ==========================================================================
+       11 USE CASES SECTION
+       ========================================================================== */
+    .use-cases-section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      margin-top: 60px;
+    }
+
+    .use-case-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      padding: 30px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition-smooth);
+    }
+
+    .use-case-card:hover {
+      background: #fff;
+      transform: translateY(-4px);
+      border-color: var(--text-dark);
+    }
+
+    .use-case-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: #f4f4f6;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .use-case-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 1.6;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .use-case-card:hover .use-case-icon {
+      background: #111111;
+      color: #ffffff;
+      border-color: #111111;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .use-case-card:hover .use-case-icon svg {
+      transform: scale(1.08);
+    }
+
+    .use-case-card h4 {
+      font-family: var(--font-headline);
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .use-case-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1024px) {
+      .use-cases-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .use-cases-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       12 FOR TEAMS SECTION (#teams)
+       ========================================================================== */
+    .teams-section {
+      padding: 120px 0;
+      background-color: var(--bg-secondary);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .teams-watermark {
+      top: 10%;
+      right: -5%;
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .team-mosaic-collage {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .mosaic-photo {
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .mosaic-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .mosaic-photo:hover img {
+      transform: scale(1.05);
+    }
+
+    .teams-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .team-benefits-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 10px 0;
+    }
+
+    .team-benefits-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-dark);
+    }
+
+    .benefit-bullet {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-coral);
+      border-radius: 50%;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 992px) {
+      .teams-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       13 PRICING SECTION (#pricing)
+       ========================================================================== */
+    .pricing-section {
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-watermark {
+      top: 5%;
+      left: 10%;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .pricing-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      padding: 50px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .pricing-card.featured {
+      background: var(--bg-primary);
+      border: 2px solid var(--text-dark);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      transform: translateY(-8px);
+    }
+
+    .popular-tag {
+      position: absolute;
+      top: -14px;
+      right: 36px;
+      background: var(--accent-coral);
+      color: #fff;
+      font-family: var(--font-headline);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+    }
+
+    .pricing-header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .pricing-tier-name {
+      font-family: var(--font-headline);
+      font-size: 28px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .pricing-price {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .price-amount {
+      font-family: var(--font-headline);
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text-dark);
+    }
+
+    .price-period {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .pricing-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 30px 0 40px 0;
+      border-top: 1px solid var(--border-light);
+      padding-top: 30px;
+    }
+
+    .pricing-features-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14.5px;
+      color: var(--text-dark);
+    }
+
+    .pricing-features-list li::before {
+      content: '✓';
+      color: var(--accent-coral);
+      font-weight: bold;
+    }
+
+    @media (max-width: 992px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .pricing-card.featured {
+        transform: none;
+      }
+    }
+
+    /* ==========================================================================
+       14 TESTIMONIALS SECTION (DARK EDITORIAL THEME)
+       ========================================================================== */
+    .testimonials-section {
+      padding: 120px 0;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial-watermark {
+      top: 10%;
+      left: 5%;
+    }
+
+    .testimonials-container {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .testimonials-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .testimonial-card-wrapper {
+      position: relative;
+      background: var(--bg-dark-card);
+      border: 1px solid var(--border-dark);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .testimonial-quote {
+      font-family: var(--font-headline);
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      font-weight: 700;
+      line-height: 1.3;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+    }
+
+    .testimonial-author-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-dark);
+      padding-top: 24px;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .author-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1.5px solid var(--border-dark);
+    }
+
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .author-name {
+      font-family: var(--font-headline);
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .author-role {
+      font-size: 13px;
+      color: var(--text-light-muted);
+    }
+
+    .testimonial-nav-controls {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-arrow-btn {
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1px solid var(--border-dark);
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-headline);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-arrow-btn:hover {
+      background: var(--text-light);
+      color: var(--text-dark);
+      border-color: var(--text-light);
+    }
+
+    @media (max-width: 900px) {
+      .testimonials-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       15 FAQ SECTION (#faq)
+       ========================================================================== */
+    .faq-section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .faq-watermark {
+      top: 5%;
+      right: 0%;
+    }
+
+    .faq-wrapper {
+      max-width: 860px;
+      margin: 60px auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      transition: var(--transition-smooth);
+    }
+
+    .faq-item:hover {
+      border-color: var(--text-dark);
+    }
+
+    .faq-header {
+      padding: 24px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .faq-question {
+      font-family: var(--font-headline);
+      font-size: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .faq-toggle-icon {
+      font-size: 20px;
+      font-weight: 300;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-toggle-icon {
+      transform: rotate(45deg);
+      color: var(--accent-coral);
+    }
+
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+      padding: 0 30px;
+    }
+
+    .faq-item.active .faq-body {
+      max-height: 250px;
+      padding: 0 30px 24px 30px;
+    }
+
+    .faq-body p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ==========================================================================
+       16 ORDER / GET STARTED SECTION (#order)
+       ========================================================================== */
+    .order-section {
+      padding: 120px 0;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .order-watermark {
+      bottom: 5%;
+      left: 5%;
+    }
+
+    .order-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 60px;
+      align-items: start;
+      position: relative;
+      z-index: 2;
+    }
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .order-info .editorial-h2 {
+      color: var(--text-light);
+    }
+
+    .order-info p {
+      font-size: 17px;
+      color: var(--text-light-muted);
+      line-height: 1.7;
+    }
+
+    .order-guarantee-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .guarantee-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .guarantee-badge svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--accent-coral);
+      flex-shrink: 0;
+    }
+
+    /* Order Intake Form */
+    .order-form-container {
+      background: var(--bg-dark-card);
+      border: 1px solid var(--border-dark);
+      padding: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-label {
+      font-family: var(--font-headline);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-dark);
+      padding: 14px 18px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-coral);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    select.form-control option {
+      background: var(--bg-dark-card);
+      color: #fff;
+    }
+
+    .file-dropzone {
+      border: 2px dashed var(--border-dark);
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .file-dropzone:hover {
+      border-color: var(--accent-coral);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .file-dropzone p {
+      font-size: 14px;
+      color: var(--text-light-muted);
+      margin-top: 8px;
+    }
+
+    .file-dropzone .dropzone-title {
+      font-family: var(--font-headline);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .order-submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--accent-coral);
+      color: #fff;
+      font-family: var(--font-headline);
+      font-size: 17px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      margin-top: 10px;
+    }
+
+    .order-submit-btn:hover {
+      background: var(--accent-coral-hover);
+    }
+
+    @media (max-width: 900px) {
+      .order-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       17 FOOTER
+       ========================================================================== */
+    .site-footer {
+      padding: 80px 0 40px 0;
+      background-color: var(--bg-primary);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-brand-col p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 340px;
+      line-height: 1.6;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-headline);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: var(--text-dark);
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links-list a {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .footer-links-list a:hover {
+      color: var(--text-dark);
+      padding-left: 4px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-light);
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       CONTACT MODAL / POPUP OVERLAY
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(18, 19, 22, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: var(--bg-primary);
+      width: 100%;
+      max-width: 840px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+      position: relative;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .modal-overlay.open .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-dark);
+      background: #fff;
+      transition: var(--transition-smooth);
+      z-index: 10;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--text-dark);
+      color: #fff;
+    }
+
+    .modal-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+    }
+
+    .modal-left {
+      background: var(--bg-secondary);
+      padding: 50px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--border-light);
+    }
+
+    .modal-left h2 {
+      font-size: clamp(2.2rem, 3.5vw, 3.5rem);
+    }
+
+    .modal-left p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .modal-contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 30px;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+
+    .modal-contact-details span {
+      font-weight: 700;
+      color: var(--accent-coral);
+    }
+
+    .modal-right {
+      padding: 50px 40px;
+      background: var(--bg-primary);
+    }
+
+    .modal-right .form-control {
+      background: #fff;
+      color: var(--text-dark);
+      border-color: var(--border-light);
+    }
+
+    .modal-right .form-control:focus {
+      border-color: var(--text-dark);
+    }
+
+    .modal-right .form-label {
+      color: var(--text-dark);
+    }
+
+    @media (max-width: 768px) {
+      .modal-layout {
+        grid-template-columns: 1fr;
+      }
+      .modal-left {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+        padding: 36px 24px;
+      }
+      .modal-right {
+        padding: 36px 24px;
+      }
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--text-dark);
+      color: #fff;
+      padding: 16px 24px;
+      font-family: var(--font-headline);
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 3000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.35s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  /* MODERN_THEME_OVERRIDES_ANCHOR */
+
+    /* ==========================================================================
+       COMPLETE SITE-WIDE THEME ALIGNMENT (HEADER & HERO DESIGN LANGUAGE)
+       - Light off-white background (#f7f7f7)
+       - Pill buttons (border-radius: 100px)
+       - Generous rounded cards (border-radius: 24px - 32px)
+       - Elegant Playfair Display serif typography
+       - Deep, rich dark styling strictly preserved for dark sections
+       ========================================================================== */
+
+    :root {
+      --bg-primary: #f7f7f7;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #ebecf0;
+      --bg-dark: #111215;
+      --bg-dark-card: #1c1d22;
+      --text-dark: #1a1a1a;
+      --text-muted: #666666;
+      --text-light: #ffffff;
+      --text-light-muted: #9da0a8;
+      --accent-coral: #1a1a1a;
+      --accent-coral-hover: #333333;
+      --border-light: rgba(0, 0, 0, 0.08);
+      --border-dark: rgba(255, 255, 255, 0.08);
+      --watermark-color: rgba(0, 0, 0, 0.03);
+      --watermark-dark: rgba(255, 255, 255, 0.03);
+    }
+
+    body {
+      background-color: #f7f7f7;
+      color: #1a1a1a;
+    }
+
+    /* Headings */
+    .editorial-h1, .editorial-h2, .editorial-h3 {
+      font-family: var(--font-serif);
+      text-transform: none;
+      letter-spacing: -0.5px;
+    }
+
+    .editorial-h1 {
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+    }
+
+    .editorial-h2 {
+      font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .editorial-h3 {
+      font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    /* Section Title Pill Tags */
+    .section-title-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+
+    /* Buttons: Header pill style across all buttons */
+    .btn,
+    .btn-solid-dark,
+    .btn-outline-dark,
+    .btn-pill-dark,
+    .btn-pill-light {
+      border-radius: 100px !important;
+      font-family: var(--font-body) !important;
+      font-weight: 600 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+      padding: 14px 30px !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .btn-solid-dark,
+    .btn-pill-dark {
+      background: #1a1a1a !important;
+      color: #ffffff !important;
+      border: 1px solid #1a1a1a !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .btn-solid-dark:hover,
+    .btn-pill-dark:hover {
+      background: #333333 !important;
+      border-color: #333333 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16) !important;
+    }
+
+    .btn-outline-dark,
+    .btn-pill-light {
+      background: #ffffff !important;
+      color: #1a1a1a !important;
+      border: 1px solid rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .btn-outline-dark:hover,
+    .btn-pill-light:hover {
+      background: #f0f0f2 !important;
+      border-color: rgba(0, 0, 0, 0.2) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* Section Backgrounds & Transitions */
+    .brand-statement-section,
+    .why-section,
+    .work-section,
+    .guide-section,
+    .use-cases-section,
+    .faq-section,
+    .site-footer {
+      background-color: #f7f7f7 !important;
+    }
+
+    .before-after-section,
+    .how-section,
+    .retouching-section,
+    .authenticity-section,
+    .teams-section {
+      background-color: #f2f3f5 !important;
+    }
+
+    /* 04 WHY CARDS */
+    .why-card {
+      background: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      border-radius: 28px !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+      padding: 40px 32px !important;
+    }
+
+    .why-card:hover {
+      transform: translateY(-6px) !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .why-number {
+      font-family: var(--font-serif) !important;
+      font-size: 2.2rem !important;
+      font-weight: 700 !important;
+      color: #1a1a1a !important;
+    }
+
+    .why-card-content h3 {
+      font-family: var(--font-serif) !important;
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+    }
+
+    /* 05 BEFORE/AFTER INTERACTIVE SLIDER */
+    .ba-slider-card {
+      border-radius: 32px !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .ba-badge-label {
+      border-radius: 100px !important;
+      font-family: var(--font-body) !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.5px !important;
+      text-transform: uppercase !important;
+      padding: 6px 16px !important;
+    }
+
+    .ba-label-after {
+      background: #1a1a1a !important;
+    }
+
+    .ba-handle-circle {
+      background: #1a1a1a !important;
+      border: 3px solid #ffffff !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .ba-detail-item h4 {
+      font-family: var(--font-serif) !important;
+      font-size: 1.15rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+    }
+
+    .ba-detail-item h4 span {
+      color: #1a1a1a !important;
+      font-family: var(--font-body) !important;
+      font-weight: 600 !important;
+    }
+
+    /* 06 WORK / GALLERY */
+    .filter-btn {
+      border-radius: 100px !important;
+      padding: 10px 22px !important;
+      font-family: var(--font-body) !important;
+      font-size: 13.5px !important;
+      font-weight: 500 !important;
+      text-transform: none !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      color: #555 !important;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #1a1a1a !important;
+      border-color: #1a1a1a !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .gallery-item {
+      border-radius: 28px !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+      overflow: hidden !important;
+    }
+
+    .gallery-tag {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.22) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      padding: 5px 14px !important;
+      border-radius: 100px !important;
+      font-family: var(--font-body) !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      width: fit-content !important;
+      text-transform: uppercase !important;
+    }
+
+    .gallery-title {
+      font-family: var(--font-serif) !important;
+      font-size: 1.25rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+    }
+
+    /* 07 HOW IT WORKS */
+    .how-step-card {
+      background: #ffffff !important;
+      border-radius: 28px !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+      padding: 40px 28px !important;
+      transition: var(--transition-smooth) !important;
+    }
+
+    .how-step-card:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .how-step-num {
+      font-family: var(--font-serif) !important;
+      font-size: 3rem !important;
+      font-weight: 700 !important;
+      color: #1a1a1a !important;
+    }
+
+    .how-step-card h3 {
+      font-family: var(--font-serif) !important;
+      font-size: 1.25rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+    }
+
+    /* 08 PHOTO GUIDE */
+    .guide-card {
+      background: #ffffff !important;
+      border-radius: 28px !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+      padding: 36px 28px !important;
+      transition: var(--transition-smooth) !important;
+    }
+
+    .guide-card:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08) !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .guide-card h3 {
+      font-family: var(--font-serif) !important;
+      font-size: 1.3rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+    }
+
+    /* 09 RETOUCHING SERVICE */
+    .retouch-service-title {
+      font-family: var(--font-serif) !important;
+      font-size: clamp(1.8rem, 2.6vw, 2.4rem) !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.3px !important;
+    }
+
+    .retouch-preview-card {
+      border-radius: 28px !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08) !important;
+      overflow: hidden !important;
+      aspect-ratio: 3 / 2 !important;
+    }
+
+    /* 10 AUTHENTICITY */
+    .auth-tag-pill {
+      background: rgba(0, 0, 0, 0.05) !important;
+      color: #1a1a1a !important;
+      padding: 6px 18px !important;
+      font-family: var(--font-body) !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.5px !important;
+      text-transform: uppercase !important;
+      border-radius: 100px !important;
+    }
+
+    /* 11 USE CASES */
+    .use-case-card {
+      background: #ffffff !important;
+      border-radius: 24px !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+      padding: 32px 22px !important;
+      transition: var(--transition-smooth) !important;
+    }
+
+    .use-case-card:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .use-case-card h4 {
+      font-family: var(--font-serif) !important;
+      font-size: 1.15rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+    }
+
+    /* 12 FOR TEAMS */
+    .mosaic-photo {
+      border-radius: 20px !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      overflow: hidden !important;
+    }
+
+    .benefit-bullet {
+      background: #1a1a1a !important;
+    }
+
+    /* 13 PRICING */
+    .pricing-card {
+      background: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      border-radius: 32px !important;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04) !important;
+      padding: 50px 36px !important;
+      transition: var(--transition-smooth) !important;
+    }
+
+    .pricing-card.featured {
+      background: #ebecf0 !important;
+      border: 2px solid #1a1a1a !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .popular-tag {
+      background: #1a1a1a !important;
+      color: #ffffff !important;
+      border-radius: 100px !important;
+      font-family: var(--font-body) !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.8px !important;
+      text-transform: uppercase !important;
+      padding: 6px 16px !important;
+      top: -14px !important;
+    }
+
+    .pricing-tier-name {
+      font-family: var(--font-serif) !important;
+      font-size: 1.6rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.3px !important;
+    }
+
+    .price-amount {
+      font-family: var(--font-serif) !important;
+      font-size: 3.2rem !important;
+      font-weight: 700 !important;
+    }
+
+    .pricing-features-list li::before {
+      color: #1a1a1a !important;
+    }
+
+    /* 14 TESTIMONIALS (DARK SECTION - PRESERVE RICH DARK THEME) */
+    .testimonials-section {
+      background-color: #111215 !important;
+      color: #ffffff !important;
+    }
+
+    .testimonials-section .section-title-tag {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .testimonial-card-wrapper {
+      background: #1c1d22 !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 32px !important;
+      padding: 48px !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .testimonial-quote {
+      font-family: var(--font-serif) !important;
+      font-size: clamp(1.4rem, 2.2vw, 1.9rem) !important;
+      font-weight: 500 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+      line-height: 1.45 !important;
+      color: #ffffff !important;
+    }
+
+    .author-name {
+      font-family: var(--font-serif) !important;
+      font-size: 1.15rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      color: #ffffff !important;
+    }
+
+    .nav-arrow-btn {
+      border-radius: 50% !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      color: #ffffff !important;
+      transition: all 0.25s ease !important;
+    }
+
+    .nav-arrow-btn:hover {
+      background: #ffffff !important;
+      color: #1a1a1a !important;
+      border-color: #ffffff !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* 15 FAQ SECTION */
+    .faq-item {
+      background: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.06) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02) !important;
+      overflow: hidden !important;
+      transition: var(--transition-smooth) !important;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(0, 0, 0, 0.12) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .faq-question {
+      font-family: var(--font-serif) !important;
+      font-size: 1.15rem !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+    }
+
+    .faq-item.active .faq-toggle-icon {
+      color: #1a1a1a !important;
+    }
+
+    /* 16 ORDER SECTION (DARK SECTION - PRESERVE RICH DARK THEME) */
+    .order-section {
+      background-color: #111215 !important;
+      color: #ffffff !important;
+    }
+
+    .order-section .section-title-tag {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .order-form-container {
+      background: #1c1d22 !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 32px !important;
+      padding: 48px !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .form-label {
+      font-family: var(--font-body) !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      text-transform: none !important;
+      color: #a0a4b0 !important;
+    }
+
+    .form-control {
+      border-radius: 14px !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #ffffff !important;
+      padding: 14px 18px !important;
+    }
+
+    .form-control:focus {
+      border-color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .file-dropzone {
+      border-radius: 20px !important;
+      border: 2px dashed rgba(255, 255, 255, 0.15) !important;
+      background: rgba(255, 255, 255, 0.02) !important;
+    }
+
+    .file-dropzone:hover {
+      border-color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .order-submit-btn {
+      background: #ffffff !important;
+      color: #1a1a1a !important;
+      border-radius: 100px !important;
+      font-family: var(--font-body) !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      letter-spacing: -0.2px !important;
+      padding: 18px !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+      transition: all 0.25s ease !important;
+    }
+
+    .order-submit-btn:hover {
+      background: #f0f0f2 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .guarantee-badge svg {
+      fill: #ffffff !important;
+    }
+
+    /* 17 SITE FOOTER */
+    .site-footer {
+      background-color: #f7f7f7 !important;
+      border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* MODAL */
+    .modal-card {
+      border-radius: 32px !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      overflow: hidden !important;
+    }
+
+    .modal-close-btn {
+      border-radius: 50% !important;
+    }
+
+/* END_MODERN_THEME_OVERRIDES */
+</style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       01 STICKY HEADER
+       ========================================================================== -->
+  <header class="site-header" id="header">
+      <div class="container header-inner">
+        <a href="#home" class="logo" aria-label="HeadshotLab Home">
+          <img src="assets/logo.png" alt="HeadshotLab" class="brand-logo-img">
+        </a>
+  
+        <nav>
+          <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#work">Portfolio</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="track.html" id="headerPortalLink">Client Portal</a></li>
+            <li><a href="#contact" class="open-contact-modal">Contact</a></li>
+          </ul>
+        </nav>
+  
+        <div class="header-actions">
+          <a href="#order" class="btn-start-project">Start a project</a>
+  
+          <div class="mobile-menu-toggle" id="mobileToggle" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+  <main>
+    <!-- ==========================================================================
+         02 HERO SECTION (#home)
+         ========================================================================== -->
+    <section class="hero-section" id="home">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-grid">
+            <div class="hero-content">
+              <h1 class="hero-headline">
+                <span class="hl-black">Headshots Better</span><br>
+                <span class="hl-grey">Faster Smarter</span>
+              </h1>
+
+              <p class="hero-description">
+                Turn your everyday photo into an editorial, studio-grade headshot for ambitious founders and creative teams.
+              </p>
+
+              <div class="hero-cta-group">
+                <a href="#pricing" class="btn btn-pill-dark">View packages</a>
+                <a href="#contact" class="btn btn-pill-light open-contact-modal">Get in touch</a>
+              </div>
+
+              <div class="hero-stats">
+                <div class="stat-item">
+                  <span class="stat-num">10k+</span>
+                  <span class="stat-label">Headshots delivered</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-num">48h</span>
+                  <span class="stat-label">Turnaround</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-num">5.0</span>
+                  <span class="stat-label">Average rating</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-image-wrapper">
+              <img src="hero_person_nobg.png?v=2" alt="Professional Headshot" class="hero-portrait">
+              
+              <div class="hero-glass-card">
+                <div class="glass-subtitle">Select package</div>
+                <div class="glass-title">Available for shoots</div>
+                <div class="glass-desc">Share a few details, and we'll get back with a clear direction.</div>
+                <a href="#pricing" class="glass-btn" aria-label="View pricing packages">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-logos">
+          <span>Codify</span>
+          <span>Flowboard</span>
+          <span>Agentify</span>
+          <span>TodoFusion</span>
+          <span>Identify</span>
+          <span>Nexus AI</span>
+          <span>Landify</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         03 BRAND STATEMENT SECTION
+         ========================================================================== -->
+    <section class="brand-statement-section">
+      <div class="watermark-text brand-statement-watermark">MODERN</div>
+
+      <div class="container brand-statement-grid">
+        <div class="statement-left">
+          <span class="section-title-tag">The HeadshotLab Philosophy</span>
+          <h2 class="editorial-h2">
+            COLLABORATION IS AT THE HEART OF OUR CRAFT. <span class="highlight-text">WE ELEVATE YOUR NATURAL PRESENCE WITHOUT LOSING WHO YOU ARE.</span>
+          </h2>
+        </div>
+
+        <div class="statement-right">
+          <p>
+            Traditional studio sessions cost hundreds of dollars and hours of your busy day. Generic AI generators produce unrecognizable, synthetic faces. HeadshotLab bridges the gap: we combine intelligent facial enhancement with meticulous human retouching to produce pristine, authentic portraits ready for the global stage.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         04 WHY HEADSHOTLAB
+         ========================================================================== -->
+    <section class="why-section">
+      <div class="container">
+        <span class="section-title-tag">Why Choose Us</span>
+        <h2 class="editorial-h2">REDEFINING THE MODERN HEADSHOT</h2>
+
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-number">01</div>
+            <div class="why-card-content">
+              <h3>AUTHENTIC TEXTURE</h3>
+              <p>We preserve genuine skin pores, subtle details, and your unique expression. Zero fake plastic sheen.</p>
+            </div>
+          </div>
+
+          <div class="why-card">
+            <div class="why-number">02</div>
+            <div class="why-card-content">
+              <h3>STUDIO LIGHTING</h3>
+              <p>We remap ambient lighting to emulate high-end Broncolor and Profoto studio softboxes.</p>
+            </div>
+          </div>
+
+          <div class="why-card">
+            <div class="why-number">03</div>
+            <div class="why-card-content">
+              <h3>48-HOUR DELIVERY</h3>
+              <p>Receive your print-ready, high-resolution and web-optimized files in under 48 hours.</p>
+            </div>
+          </div>
+
+          <div class="why-card">
+            <div class="why-number">04</div>
+            <div class="why-card-content">
+              <h3>TEAM HARMONY</h3>
+              <p>Unify executive and company rosters with consistent color grading and backdrop styling.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         05 BEFORE / AFTER SECTION
+         ========================================================================== -->
+    <section class="before-after-section">
+      <div class="watermark-text ba-watermark">BEFORE/AFTER</div>
+
+      <div class="container">
+        <div class="ba-header">
+          <div>
+            <span class="section-title-tag">Transformation</span>
+            <h2 class="editorial-h2">SEE THE DIFFERENCE</h2>
+          </div>
+          <p style="color:var(--text-muted); max-width:400px; font-size:15px;">
+            Drag the slider to inspect the before phone photo versus the final HeadshotLab studio grade result.
+          </p>
+        </div>
+
+        <div class="ba-interactive-container">
+          <!-- Interactive Slider -->
+          <div class="ba-slider-card" id="baSlider">
+            <div class="ba-image-before" id="baBeforeWrapper">
+              <img src="assets/before_casual.jpg?v=2" alt="Casual Before Photo">
+            </div>
+            <div class="ba-image-after">
+              <img src="assets/after_studio.jpg?v=2" alt="Professional Studio After">
+            </div>
+
+            <span class="ba-badge-label ba-label-before">ORIGINAL CASUAL</span>
+            <span class="ba-badge-label ba-label-after">HEADSHOTLAB STUDIO</span>
+
+            <div class="ba-handle" id="baHandle">
+              <div class="ba-handle-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enhancement Breakdown -->
+          <div class="ba-details-list">
+            <div class="ba-detail-item">
+              <h4><span>01</span> WARDROBE & COLLAR REFINEMENT</h4>
+              <p>Crisp alignment of fabric, suit lapels, and neckline for a bespoke, sharp tailored silhouette.</p>
+            </div>
+
+            <div class="ba-detail-item">
+              <h4><span>02</span> MICRO-CONTRAST & EYE ENHANCEMENT</h4>
+              <p>Catchlights added to eyes, gentle iris brightening, and natural gaze alignment.</p>
+            </div>
+
+            <div class="ba-detail-item">
+              <h4><span>03</span> STUDIO BACKDROP REMAPPING</h4>
+              <p>Casual backgrounds cleanly replaced with warm architectural, subtle slate, or minimalist linen textures.</p>
+            </div>
+
+            <div class="ba-detail-item">
+              <h4><span>04</span> BLEMISH & FLYAWAY MANAGEMENT</h4>
+              <p>Taming distracting flyaway hairs while honoring natural facial contours and characteristics.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         06 WORK / GALLERY SECTION (#work)
+         ========================================================================== -->
+    <section class="work-section" id="work">
+      <div class="watermark-text work-watermark">GALLERY</div>
+
+      <div class="container">
+        <span class="section-title-tag">Featured Portfolio</span>
+        <h2 class="editorial-h2">SELECTED HEADSHOTS &amp; PORTRAITS</h2>
+
+        <div class="gallery-filter-bar">
+          <button class="filter-btn active" data-filter="all">ALL WORK</button>
+          <button class="filter-btn" data-filter="executive">EXECUTIVE &amp; BOARD</button>
+          <button class="filter-btn" data-filter="creative">CREATIVE &amp; EDITORIAL</button>
+          <button class="filter-btn" data-filter="tech">TECH &amp; FOUNDERS</button>
+          <button class="filter-btn" data-filter="linkedin">LINKEDIN READY</button>
+        </div>
+
+        <div class="gallery-grid">
+          <!-- Item 1 -->
+          <div class="gallery-item" data-category="executive">
+            <img src="assets/gallery_sarah.jpg" alt="Executive Headshot - Sarah Jenkins">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">EXECUTIVE</span>
+              <h3 class="gallery-title">Sarah Jenkins</h3>
+              <span class="gallery-subtitle">Managing Director, Horizon Capital</span>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="gallery-item" data-category="creative">
+            <img src="assets/gallery_julian.jpg" alt="Creative Portrait - Julian Moreau">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">CREATIVE</span>
+              <h3 class="gallery-title">Julian Moreau</h3>
+              <span class="gallery-subtitle">Architectural Designer &amp; Curator</span>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="gallery-item" data-category="tech">
+            <img src="assets/gallery_elena.jpg" alt="Tech Founder Headshot - Dr. Elena Rostova">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">TECH FOUNDER</span>
+              <h3 class="gallery-title">Dr. Elena Rostova</h3>
+              <span class="gallery-subtitle">Chief AI Scientist, NeuralGrid</span>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="gallery-item" data-category="linkedin">
+            <img src="assets/gallery_marcus.jpg" alt="Corporate Headshot - Marcus Vance">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">LINKEDIN</span>
+              <h3 class="gallery-title">Marcus Vance</h3>
+              <span class="gallery-subtitle">Senior Strategy Partner</span>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="gallery-item" data-category="executive">
+            <img src="assets/gallery_claire.jpg" alt="Corporate Portrait - Claire Sterling">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">EXECUTIVE</span>
+              <h3 class="gallery-title">Claire Sterling</h3>
+              <span class="gallery-subtitle">VP of People &amp; Culture</span>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="gallery-item" data-category="creative">
+            <img src="assets/gallery_david.jpg" alt="Editorial Headshot - David Chen">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">EDITORIAL</span>
+              <h3 class="gallery-title">David Chen</h3>
+              <span class="gallery-subtitle">Author &amp; Keynote Speaker</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         07 HOW IT WORKS SECTION (#how-it-works)
+         ========================================================================== -->
+    <section class="how-section" id="how-it-works">
+      <div class="container">
+        <span class="section-title-tag">Simple 4-Step Process</span>
+        <h2 class="editorial-h2">HOW HEADSHOTLAB WORKS</h2>
+
+        <div class="how-grid">
+          <div class="how-step-card">
+            <div class="how-step-num">01</div>
+            <h3>TAKE YOUR PHOTO</h3>
+            <p>Snap a photo with your smartphone or select an existing favorite casual shot following our simple photo guide.</p>
+          </div>
+
+          <div class="how-step-card">
+            <div class="how-step-num">02</div>
+            <h3>UPLOAD &amp; CUSTOMIZE</h3>
+            <p>Upload your image to our secure portal, choose your preferred background tone, and add any specific retouching notes.</p>
+          </div>
+
+          <div class="how-step-card">
+            <div class="how-step-num">03</div>
+            <h3>EXPERT RETOUCHING</h3>
+            <p>Our hybrid studio team applies custom color grading, studio lighting correction, and high-fidelity texture perfection.</p>
+          </div>
+
+          <div class="how-step-card">
+            <div class="how-step-num">04</div>
+            <h3>GET YOUR HEADSHOT</h3>
+            <p>Download your package within 48 hours in full high-resolution for print, web, LinkedIn, and social profiles.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         08 PHOTO GUIDE SECTION (#photo-guide)
+         ========================================================================== -->
+    <section class="guide-section" id="photo-guide">
+      <div class="watermark-text guide-watermark">GUIDE</div>
+
+      <div class="container">
+        <span class="section-title-tag">The Best Input Yields The Best Output</span>
+        <h2 class="editorial-h2">SMARTPHONE PHOTO GUIDE</h2>
+
+        <div class="guide-grid">
+          <div class="guide-card">
+            <div class="guide-icon-header">
+              <span class="guide-tag-num">RULE 01</span>
+            </div>
+            <h3>LIGHTING</h3>
+            <p>Face a large window with soft indirect daylight. Avoid harsh direct sun casting deep shadows under your nose or eyes.</p>
+            <ul class="guide-checklist">
+              <li>Even, diffused daylight</li>
+              <li>No harsh overhead yellow lamps</li>
+            </ul>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-icon-header">
+              <span class="guide-tag-num">RULE 02</span>
+            </div>
+            <h3>CAMERA DISTANCE</h3>
+            <p>Hold the camera at eye level, roughly 3 to 5 feet away. Use 2x optical zoom if available to prevent wide-angle distortion.</p>
+            <ul class="guide-checklist">
+              <li>Eye-level alignment</li>
+              <li>Chest-up framing</li>
+            </ul>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-icon-header">
+              <span class="guide-tag-num">RULE 03</span>
+            </div>
+            <h3>BACKGROUND</h3>
+            <p>Any neutral wall or quiet indoor space works well. We will cleanly replace the backdrop with our editorial studio tones.</p>
+            <ul class="guide-checklist">
+              <li>Plain wall or open room</li>
+              <li>No cluttered objects behind head</li>
+            </ul>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-icon-header">
+              <span class="guide-tag-num">RULE 04</span>
+            </div>
+            <h3>POSTURE &amp; ANGLE</h3>
+            <p>Angle your shoulders 15-20 degrees away from the lens and turn your face gently toward the camera for a dynamic stance.</p>
+            <ul class="guide-checklist">
+              <li>Relaxed shoulders</li>
+              <li>Slight diagonal angle</li>
+            </ul>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-icon-header">
+              <span class="guide-tag-num">RULE 05</span>
+            </div>
+            <h3>EXPRESSION</h3>
+            <p>A natural, confident smile with eyes engaged. Think of a positive conversation rather than a stiff passport freeze.</p>
+            <ul class="guide-checklist">
+              <li>Approachable &amp; authentic</li>
+              <li>Relaxed jawline</li>
+            </ul>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-icon-header">
+              <span class="guide-tag-num">RULE 06</span>
+            </div>
+            <h3>WARDROBE</h3>
+            <p>Solid neutral colors, structured collars, blazers, or clean crew necks. Avoid busy small patterns that can cause moiré.</p>
+            <ul class="guide-checklist">
+              <li>Solid colors (navy, charcoal, ivory)</li>
+              <li>Clean, unwrinkled fabric</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         09 PROFESSIONAL RETOUCHING (SHOWCASE)
+         ========================================================================== -->
+    <section class="retouching-section">
+      <div class="container">
+        <span class="section-title-tag">Craft &amp; Precision</span>
+        <h2 class="editorial-h2">STUDIO-GRADE FINISHING</h2>
+
+        <div class="retouch-showcase-grid">
+          <div class="retouch-service-list">
+            <div class="retouch-service-item active" data-image="assets/retouch_texture.png">
+              <div class="retouch-service-title">TEXTURE PRESERVATION</div>
+              <div class="retouch-service-desc">
+                Frequency-separation retouching that cleans temporary blemishes while keeping pores, laugh lines, and true skin vitality untouched.
+              </div>
+            </div>
+
+            <div class="retouch-service-item" data-image="assets/retouch_lighting.jpg">
+              <div class="retouch-service-title">LIGHTING CALIBRATION</div>
+              <div class="retouch-service-desc">
+                3D depth re-lighting mapping specular highlights and soft rim light for true studio separation.
+              </div>
+            </div>
+
+            <div class="retouch-service-item" data-image="assets/retouch_wardrobe.jpg">
+              <div class="retouch-service-title">WARDROBE ENHANCEMENT</div>
+              <div class="retouch-service-desc">
+                Digitally straightening lapels, smoothing wrinkles, and adjusting color tones to complement your complexion.
+              </div>
+            </div>
+
+            <div class="retouch-service-item" data-image="assets/retouch_backgrounds.jpg">
+              <div class="retouch-service-title">STUDIO BACKGROUNDS</div>
+              <div class="retouch-service-desc">
+                High-end warm linen, concrete brutalist, soft architectural, and solid editorial cyclorama backdrops.
+              </div>
+            </div>
+          </div>
+
+          <div class="retouch-preview-card">
+            <img id="retouchPreviewImg" src="assets/retouch_texture.png" alt="Retouching Precision Preview">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         10 AUTHENTICITY SECTION
+         ========================================================================== -->
+    <section class="authenticity-section">
+      <div class="container auth-banner">
+        <span class="auth-tag-pill">THE ANTI-FILTER GUARANTEE</span>
+        <h2 class="editorial-h2">"NEVER ARTIFICIAL. NEVER PLASTICKY. ALWAYS YOU."</h2>
+        <p style="font-size:17px; color:var(--text-muted); max-width:700px; line-height:1.7;">
+          If your colleagues wouldn't immediately recognize you in an elevator, we haven't done our job. Our mission is to present you on your best day with effortless, elevated polish.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         11 USE CASES SECTION
+         ========================================================================== -->
+    <section class="use-cases-section">
+      <div class="container">
+        <span class="section-title-tag">Versatility</span>
+        <h2 class="editorial-h2">ONE HEADSHOT. ENDLESS APPLICATIONS.</h2>
+
+        <div class="use-cases-grid">
+          <div class="use-case-card">
+            <div class="use-case-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h4>LINKEDIN &amp; SOCIAL</h4>
+            <p>Boost profile visibility and project immediate credibility to recruiters and clients.</p>
+          </div>
+
+          <div class="use-case-card">
+            <div class="use-case-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                <path d="M9 22v-4h6v4"></path>
+                <path d="M8 6h.01M12 6h.01M16 6h.01"></path>
+                <path d="M8 10h.01M12 10h.01M16 10h.01"></path>
+                <path d="M8 14h.01M12 14h.01M16 14h.01"></path>
+              </svg>
+            </div>
+            <h4>COMPANY ABOUT PAGE</h4>
+            <p>Unified, high-end roster aesthetics across distributed and in-office staff.</p>
+          </div>
+
+          <div class="use-case-card">
+            <div class="use-case-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="22"></line>
+                <line x1="8" y1="22" x2="16" y2="22"></line>
+              </svg>
+            </div>
+            <h4>KEYNOTES &amp; PRESS</h4>
+            <p>Print-ready 300DPI assets for conference booklets, podcasts, and media features.</p>
+          </div>
+
+          <div class="use-case-card">
+            <div class="use-case-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <circle cx="10" cy="13" r="2"></circle>
+                <path d="M7 18a3 3 0 0 1 6 0"></path>
+                <line x1="15" y1="13" x2="17" y2="13"></line>
+                <line x1="15" y1="17" x2="17" y2="17"></line>
+              </svg>
+            </div>
+            <h4>RESUME &amp; CV</h4>
+            <p>Command immediate attention in competitive executive and international job markets.</p>
+          </div>
+
+          <div class="use-case-card">
+            <div class="use-case-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+                <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+                <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+                <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+                <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+                <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+              </svg>
+            </div>
+            <h4>CREATIVE PORTFOLIO</h4>
+            <p>Art-directed mood and character for actors, architects, and agency founders.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         12 FOR TEAMS SECTION (#teams)
+         ========================================================================== -->
+    <section class="teams-section" id="teams">
+      <div class="watermark-text teams-watermark">TEAMS</div>
+
+      <div class="container teams-grid">
+        <div class="team-mosaic-collage">
+          <div class="mosaic-photo"><img src="assets/team_1.jpg" alt="Team Member 1"></div>
+          <div class="mosaic-photo"><img src="assets/team_2.jpg" alt="Team Member 2"></div>
+          <div class="mosaic-photo"><img src="assets/team_3.jpg" alt="Team Member 3"></div>
+          <div class="mosaic-photo"><img src="assets/team_4.jpg" alt="Team Member 4"></div>
+          <div class="mosaic-photo"><img src="assets/team_6.jpg" alt="Team Member 5"></div>
+          <div class="mosaic-photo"><img src="assets/team_5.jpg" alt="Team Member 6"></div>
+        </div>
+
+        <div class="teams-content">
+          <span class="section-title-tag">Enterprise &amp; Startups</span>
+          <h2 class="editorial-h2">UNIFIED VISUAL IDENTITY FOR YOUR ENTIRE TEAM</h2>
+          <p style="color:var(--text-muted); font-size:16px;">
+            Eliminate messy mismatched team directories. Every team member uploads their photo from anywhere in the world, and we deliver matching, cohesive brand portraits.
+          </p>
+
+          <ul class="team-benefits-list">
+            <li><span class="benefit-bullet"></span> Dedicated team onboarding portal &amp; bulk submission</li>
+            <li><span class="benefit-bullet"></span> Custom brand background &amp; color matching guidelines</li>
+            <li><span class="benefit-bullet"></span> Centralized billing and priority 24h SLA turnaround</li>
+            <li><span class="benefit-bullet"></span> Unlimited free revisions on enterprise tiers</li>
+          </ul>
+
+          <div>
+            <button class="btn btn-solid-dark open-contact-modal">REQUEST TEAM HEADSHOTS &gt;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         13 PRICING SECTION (#pricing)
+         ========================================================================== -->
+    <section class="pricing-section" id="pricing">
+      <div class="watermark-text pricing-watermark">PRICING</div>
+
+      <div class="container">
+        <div style="text-align:center; max-width:640px; margin:0 auto;">
+          <span class="section-title-tag">Clear &amp; Transparent</span>
+          <h2 class="editorial-h2">SIMPLE, PREDICTABLE PRICING</h2>
+          <p style="color:var(--text-muted); font-size:16px; margin-top:8px;">
+            No hidden studio rental fees, equipment markups, or hourly overages.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Tier 1 -->
+          <div class="pricing-card">
+            <div>
+              <div class="pricing-header">
+                <div class="pricing-tier-name">INDIVIDUAL</div>
+                <div class="pricing-price">
+                  <span class="price-amount">$29</span>
+                  <span class="price-period">/ one photo</span>
+                </div>
+              </div>
+              <p style="font-size:14px; color:var(--text-muted);">
+                Perfect for professionals updating their LinkedIn or resume.
+              </p>
+
+              <ul class="pricing-features-list">
+                <li>3 High-res background variations</li>
+                <li>Meticulous skin &amp; hair retouching</li>
+                <li>Studio lighting calibration</li>
+                <li>Standard 48-hour delivery</li>
+                <li>2 Free rounds of revisions</li>
+              </ul>
+            </div>
+
+            <a href="#order" class="btn btn-outline-dark" style="width:100%;">GET STARTED</a>
+          </div>
+
+          <!-- Tier 2 (Featured) -->
+          <div class="pricing-card featured">
+            <span class="popular-tag">MOST POPULAR</span>
+            <div>
+              <div class="pricing-header">
+                <div class="pricing-tier-name">TEAM / STARTUP</div>
+                <div class="pricing-price">
+                  <span class="price-amount">$19</span>
+                  <span class="price-period">/ person (min 5)</span>
+                </div>
+              </div>
+              <p style="font-size:14px; color:var(--text-muted);">
+                Designed for high-growth companies wanting a unified roster.
+              </p>
+
+              <ul class="pricing-features-list">
+                <li>Everything in Individual</li>
+                <li>Custom company backdrop styling</li>
+                <li>Team admin dashboard</li>
+                <li>Priority 24-hour delivery</li>
+                <li>3 Free rounds of revisions</li>
+              </ul>
+            </div>
+
+            <a href="#order" class="btn btn-solid-dark" style="width:100%;">START TEAM ORDER</a>
+          </div>
+
+          <!-- Tier 3 -->
+          <div class="pricing-card">
+            <div>
+              <div class="pricing-header">
+                <div class="pricing-tier-name">ENTERPRISE</div>
+                <div class="pricing-price">
+                  <span class="price-amount">CUSTOM</span>
+                  <span class="price-period">/ 50+ members</span>
+                </div>
+              </div>
+              <p style="font-size:14px; color:var(--text-muted);">
+                Tailored solutions for global enterprises &amp; agencies.
+              </p>
+
+              <ul class="pricing-features-list">
+                <li>Dedicated art director &amp; retoucher</li>
+                <li>Custom API &amp; HRIS integration</li>
+                <li>Strict brand guideline enforcement</li>
+                <li>Instant priority SLA turnaround</li>
+                <li>Unlimited revisions</li>
+              </ul>
+            </div>
+
+            <button class="btn btn-outline-dark open-contact-modal" style="width:100%;">CONTACT SALES</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         14 TESTIMONIALS SECTION
+         ========================================================================== -->
+    <section class="testimonials-section">
+      <div class="watermark-text testimonial-watermark">VOICES</div>
+
+      <div class="container testimonials-container">
+        <div class="testimonials-left">
+          <span class="section-title-tag">Client Feedback</span>
+          <h2 class="editorial-h2" style="color:var(--text-light);">
+            TRUSTED BY LEADERS WORLDWIDE
+          </h2>
+          <p style="color:var(--text-light-muted); font-size:16px;">
+            See why over 1,200+ founders, partners, and creatives rely on HeadshotLab for their primary digital presence.
+          </p>
+        </div>
+
+        <div class="testimonial-card-wrapper" id="testimonialCard">
+          <p class="testimonial-quote" id="testQuote">
+            "HEADSHOTLAB TRANSFORMED A QUICK PHONE SNAP INTO A MAGAZINE-QUALITY COVER PORTRAIT. MY LINKEDIN PROFILE ENGAGEMENT JUMPED BY 300% WITHIN A WEEK."
+          </p>
+
+          <div class="testimonial-author-row">
+            <div class="author-info">
+              <div class="author-avatar">
+                <img id="testAvatar" src="assets/gallery_sarah.jpg" alt="Client Avatar">
+              </div>
+              <div>
+                <div class="author-name" id="testName">Sarah Jenkins</div>
+                <div class="author-role" id="testRole">Managing Director, Horizon Capital</div>
+              </div>
+            </div>
+
+            <div class="testimonial-nav-controls">
+              <button class="nav-arrow-btn" id="prevTestimonial" aria-label="Previous">PREV</button>
+              <button class="nav-arrow-btn" id="nextTestimonial" aria-label="Next">NEXT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         15 FAQ SECTION (#faq)
+         ========================================================================== -->
+    <section class="faq-section" id="faq">
+      <div class="watermark-text faq-watermark">QUESTIONS</div>
+
+      <div class="container">
+        <div style="text-align:center; max-width:600px; margin:0 auto;">
+          <span class="section-title-tag">Answers &amp; Clarity</span>
+          <h2 class="editorial-h2">FREQUENTLY ASKED QUESTIONS</h2>
+        </div>
+
+        <div class="faq-wrapper">
+          <div class="faq-item active">
+            <div class="faq-header">
+              <div class="faq-question">WHAT KIND OF PHOTO SHOULD I UPLOAD?</div>
+              <div class="faq-toggle-icon">+</div>
+            </div>
+            <div class="faq-body">
+              <p>Any well-lit smartphone photo taken in natural daylight (facing a window) works wonders. Even a clear selfie or casual portrait is suitable as long as your facial features are in focus and not blurry.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header">
+              <div class="faq-question">HOW LONG DOES DELIVERY TAKE?</div>
+              <div class="faq-toggle-icon">+</div>
+            </div>
+            <div class="faq-body">
+              <p>Individual orders are delivered to your email within 48 hours. Team orders generally take 24 to 72 hours depending on the roster size.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header">
+              <div class="faq-question">WILL MY FACE LOOK LIKE A FAKE AI FILTER?</div>
+              <div class="faq-toggle-icon">+</div>
+            </div>
+            <div class="faq-body">
+              <p>Absolutely not. We take great pride in our Anti-Filter policy. We do not generate hallucinations or replace your facial structure. Every image is refined by professional photo retouchers to ensure high-fidelity realism.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header">
+              <div class="faq-question">WHAT IF I NEED A REVISION?</div>
+              <div class="faq-toggle-icon">+</div>
+            </div>
+            <div class="faq-body">
+              <p>All individual orders come with 2 free revision rounds, and team orders come with 3 rounds. If you want any adjustments to lighting, wardrobe colors, or background tones, just reply to your delivery email!</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header">
+              <div class="faq-question">DO YOU OFFER BULK DISCOUNTS FOR COMPANIES?</div>
+              <div class="faq-toggle-icon">+</div>
+            </div>
+            <div class="faq-body">
+              <p>Yes! We offer tiered volume pricing for teams of 5 to 500+ employees. You will receive a unified brand guide, a private team upload link, and invoice billing.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         16 ORDER / GET STARTED SECTION (#order)
+         ========================================================================== -->
+    <section class="order-section" id="order">
+      <div class="watermark-text order-watermark">ORDER</div>
+
+      <div class="container order-grid">
+        <div class="order-info">
+          <span class="section-title-tag">Start Your Transformation</span>
+          <h2 class="editorial-h2">READY TO CREATE YOUR PROFESSIONAL HEADSHOT?</h2>
+          <p>
+            Start with a good photograph. We'll take care of the professional finishing. Upload your image today and receive studio-grade results in under 48 hours.
+          </p>
+
+          <div class="order-guarantee-badges">
+            <div class="guarantee-badge">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span>100% Satisfaction Guarantee — Free Revisions</span>
+            </div>
+            <div class="guarantee-badge">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span>High-Resolution 300 DPI Print &amp; Web Files</span>
+            </div>
+            <div class="guarantee-badge">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span>Strict Privacy — Your Images Are Never Shared</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-form-container">
+          <form id="orderIntakeForm">
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">FULL NAME *</label>
+                <input type="text" id="orderClientName" class="form-control" placeholder="e.g. Alexander Wright" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">EMAIL ADDRESS *</label>
+                <input type="email" id="orderClientEmail" class="form-control" placeholder="alex@company.com" required>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">CREATE ACCOUNT PASSWORD *</label>
+                <input type="password" id="orderClientPassword" class="form-control" placeholder="Create account password" required>
+              </div>
+              <div class="form-group" style="justify-content:center;">
+                <p style="font-size: 0.8rem; color: #a0a4b0; margin-top: 18px;">
+                  🔒 An account will be created so you can log in to track your headshot in real-time.
+                </p>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">SERVICE TIER *</label>
+                <select class="form-control" required>
+                  <option value="individual">Individual Headshot ($29)</option>
+                  <option value="team">Team Headshots ($19/ea)</option>
+                  <option value="executive">Executive &amp; Board Pack ($89)</option>
+                  <option value="custom">Custom / Organisation Request</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">BACKGROUND PREFERENCE</label>
+                <select class="form-control">
+                  <option value="neutral">Warm Neutral Linen</option>
+                  <option value="charcoal">Modern Slate / Charcoal</option>
+                  <option value="architectural">Soft Architectural Blur</option>
+                  <option value="white">Pure Studio White</option>
+                  <option value="custom">Custom Brand Colors</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">UPLOAD YOUR PHOTO</label>
+              <div class="file-dropzone" id="fileDropzone">
+                <div class="dropzone-title">DRAG &amp; DROP OR CLICK TO UPLOAD</div>
+                <p>JPG, PNG or HEIC up to 25MB</p>
+                <input type="file" id="photoFileInput" style="display:none;" accept="image/*">
+                <div id="fileSelectedName" style="margin-top:10px; color:var(--accent-coral); font-weight:600; font-size:14px; display:none;"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">ADDITIONAL NOTES / SPECIFIC REQUESTS</label>
+              <textarea class="form-control" rows="3" placeholder="Tell us if you need specific crop sizes, wardrobe color matching, or specific retoucher guidance..."></textarea>
+            </div>
+
+            <button type="submit" class="order-submit-btn">SUBMIT ORDER REQUEST &gt;</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       17 FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <a href="#home" class="footer-logo" aria-label="HeadshotLab Home">
+            <img src="assets/logo-white.png" alt="HeadshotLab" class="brand-logo-footer">
+          </a>
+          <p>
+            High-fidelity editorial headshots and portrait retouching for professionals, founders, and modern teams worldwide.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">NAVIGATION</div>
+          <ul class="footer-links-list">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#work">Featured Work</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#photo-guide">Photo Guide</a></li>
+            <li><a href="#teams">For Teams</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">SERVICES</div>
+          <ul class="footer-links-list">
+            <li><a href="#order">LinkedIn Headshots</a></li>
+            <li><a href="#order">Executive Portraits</a></li>
+            <li><a href="#teams">Company Rosters</a></li>
+            <li><a href="#order">Creative &amp; Acting</a></li>
+            <li><a href="#order">Speaking &amp; Press</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">CONNECT</div>
+          <ul class="footer-links-list">
+            <li><a href="#contact" class="open-contact-modal">Contact Team</a></li>
+            <li><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://twitter.com" target="_blank" rel="noopener">Twitter / X</a></li>
+            <li><a href="admin.html" target="_blank" style="opacity:0.6;">Admin Console 🔒</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 HEADSHOTLAB. All rights reserved. Professional &amp; Authentic.</div>
+        <div>Designed with Editorial Precision.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       CONTACT POPUP / MODAL (POPUP BUILDER EQUIVALENT)
+       ========================================================================== -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="closeContactModal" aria-label="Close Modal">&times;</button>
+
+      <div class="modal-layout">
+        <div class="modal-left">
+          <div>
+            <span class="section-title-tag">Get In Touch</span>
+            <h2 class="editorial-h2">LET'S TALK.</h2>
+            <p style="margin-top:14px;">
+              Have a question about your headshot, retouching requirements, or a team project? Send us a message and our lead retoucher will reply within 12 hours.
+            </p>
+          </div>
+
+          <div class="modal-contact-details">
+            <div><span>STUDIO:</span> contact@headshotlab.us</div>
+            <div><span>HOURS:</span> Mon — Fri, 9am — 6pm EST</div>
+            <div><span>LOCATION:</span> New York &bull; London &bull; Remote</div>
+          </div>
+        </div>
+
+        <div class="modal-right">
+          <form id="contactModalForm">
+            <div class="form-group">
+              <label class="form-label">YOUR NAME *</label>
+              <input type="text" class="form-control" placeholder="Jane Doe" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">YOUR EMAIL *</label>
+              <input type="email" class="form-control" placeholder="jane@company.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">SUBJECT</label>
+              <input type="text" class="form-control" placeholder="Headshot Inquiry / Team Proposal">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">MESSAGE *</label>
+              <textarea class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-solid-dark" style="width:100%; margin-top:10px;">
+              SEND MESSAGE &gt;
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toastMessage">
+    <span>✓</span> <span id="toastText">Message sent successfully!</span>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT INTERACTIONS & EVENT HANDLERS
+       ========================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* ------------------------------------------------------------------------
+         1. Mobile Menu Toggle & Auto-Close on Anchor Click
+         ------------------------------------------------------------------------ */
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', () => {
+          mobileToggle.classList.toggle('open');
+          navLinks.classList.toggle('open');
+        });
+
+        // Close menu when clicking any link
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            mobileToggle.classList.remove('open');
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         1.5 Frosted Glass Header On Scroll
+         ------------------------------------------------------------------------ */
+      const siteHeaderEl = document.getElementById('header') || document.querySelector('.site-header');
+      const handleHeaderScroll = () => {
+        if (siteHeaderEl) {
+          if (window.scrollY > 15) {
+            siteHeaderEl.classList.add('scrolled');
+          } else {
+            siteHeaderEl.classList.remove('scrolled');
+          }
+        }
+      };
+      window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+      handleHeaderScroll();
+
+      /* ------------------------------------------------------------------------
+         2. Active Header Link On Scroll
+         ------------------------------------------------------------------------ */
+      const sections = document.querySelectorAll('section[id]');
+      const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollPosition = window.scrollY + 120;
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navAnchors.forEach(anchor => {
+          anchor.classList.remove('active');
+          if (anchor.getAttribute('href') === `#${current}`) {
+            anchor.classList.add('active');
+          }
+        });
+      });
+
+      /* ------------------------------------------------------------------------
+         3. Contact Popup Modal Management (ESC, Close Button, Outside Click)
+         ------------------------------------------------------------------------ */
+      const contactModal = document.getElementById('contactModal');
+      const openModalBtns = document.querySelectorAll('.open-contact-modal');
+      const closeModalBtn = document.getElementById('closeContactModal');
+
+      const openModal = (e) => {
+        if (e) e.preventDefault();
+        contactModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+
+      const closeModal = () => {
+        contactModal.classList.remove('open');
+        document.body.style.overflow = '';
+      };
+
+      openModalBtns.forEach(btn => btn.addEventListener('click', openModal));
+      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+
+      // Close when clicking outside modal card
+      contactModal.addEventListener('click', (e) => {
+        if (e.target === contactModal) {
+          closeModal();
+        }
+      });
+
+      // Close on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && contactModal.classList.contains('open')) {
+          closeModal();
+        }
+      });
+
+      /* ------------------------------------------------------------------------
+         4. Interactive Before/After Comparison Slider
+         ------------------------------------------------------------------------ */
+      const baSlider = document.getElementById('baSlider');
+      const baBefore = document.getElementById('baBeforeWrapper');
+      const baHandle = document.getElementById('baHandle');
+
+      if (baSlider && baBefore && baHandle) {
+        let isDown = false;
+
+        const updatePosition = (xPos) => {
+          const rect = baSlider.getBoundingClientRect();
+          let pos = ((xPos - rect.left) / rect.width) * 100;
+          if (pos < 0) pos = 0;
+          if (pos > 100) pos = 100;
+
+          baBefore.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+          baBefore.style.webkitClipPath = `inset(0 ${100 - pos}% 0 0)`;
+          baHandle.style.left = `${pos}%`;
+        };
+
+        baSlider.addEventListener('mousedown', (e) => {
+          isDown = true;
+          updatePosition(e.clientX);
+        });
+
+        window.addEventListener('mouseup', () => { isDown = false; });
+
+        window.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          updatePosition(e.clientX);
+        });
+
+        // Touch events for mobile
+        baSlider.addEventListener('touchstart', (e) => {
+          isDown = true;
+          updatePosition(e.touches[0].clientX);
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => { isDown = false; });
+
+        window.addEventListener('touchmove', (e) => {
+          if (!isDown) return;
+          updatePosition(e.touches[0].clientX);
+        }, { passive: true });
+      }
+
+      /* ------------------------------------------------------------------------
+         5. Portfolio Gallery Filter
+         ------------------------------------------------------------------------ */
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const galleryItems = document.querySelectorAll('.gallery-item');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filterValue = btn.getAttribute('data-filter');
+
+          galleryItems.forEach(item => {
+            const category = item.getAttribute('data-category');
+            if (filterValue === 'all' || category === filterValue) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      /* ------------------------------------------------------------------------
+         6. Retouching Interactive Showcase Item Switcher
+         ------------------------------------------------------------------------ */
+      const retouchItems = document.querySelectorAll('.retouch-service-item');
+      const retouchImg = document.getElementById('retouchPreviewImg');
+
+      retouchItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          retouchItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          const imgSrc = item.getAttribute('data-image');
+          if (imgSrc && retouchImg) {
+            retouchImg.style.opacity = '0.4';
+            setTimeout(() => {
+              retouchImg.src = imgSrc;
+              retouchImg.style.opacity = '1';
+            }, 150);
+          }
+        });
+      });
+
+      /* ------------------------------------------------------------------------
+         7. Testimonials Carousel Data & Controls
+         ------------------------------------------------------------------------ */
+      const testimonials = [
+        {
+          quote: "HEADSHOTLAB TRANSFORMED A QUICK PHONE SNAP INTO A MAGAZINE-QUALITY COVER PORTRAIT. MY LINKEDIN ENGAGEMENT JUMPED BY 300% WITHIN A WEEK.",
+          name: "Sarah Jenkins",
+          role: "Managing Director, Horizon Capital",
+          avatar: "assets/gallery_sarah.jpg"
+        },
+        {
+          quote: "GETTING 45 DISTRIBUTED REMOTE ENGINEERS TO COORDINATE A STUDIO VISIT WAS IMPOSSIBLE. HEADSHOTLAB SOLVED OUR TEAM DIRECTORY IN 48 HOURS WITH STUNNING COHESION.",
+          name: "Marcus Vance",
+          role: "VP Engineering, Apex Dynamics",
+          avatar: "assets/gallery_marcus.jpg"
+        },
+        {
+          quote: "AS A CREATIVE FOUNDER, I HATE RIGID CORPORATE PORTRAITS. HEADSHOTLAB GAVE ME AN EDITORIAL, MOODY VIBE THAT ACTUALLY MATCHES MY BRAND AESTHETIC.",
+          name: "Julian Moreau",
+          role: "Creative Director, Studio Atelier",
+          avatar: "assets/gallery_julian.jpg"
+        }
+      ];
+
+      let currentTestimonialIndex = 0;
+      const testQuote = document.getElementById('testQuote');
+      const testName = document.getElementById('testName');
+      const testRole = document.getElementById('testRole');
+      const testAvatar = document.getElementById('testAvatar');
+      const prevTest = document.getElementById('prevTestimonial');
+      const nextTest = document.getElementById('nextTestimonial');
+
+      const renderTestimonial = (index) => {
+        const t = testimonials[index];
+        testQuote.textContent = `"${t.quote}"`;
+        testName.textContent = t.name;
+        testRole.textContent = t.role;
+        testAvatar.src = t.avatar;
+      };
+
+      if (prevTest && nextTest) {
+        prevTest.addEventListener('click', () => {
+          currentTestimonialIndex = (currentTestimonialIndex - 1 + testimonials.length) % testimonials.length;
+          renderTestimonial(currentTestimonialIndex);
+        });
+
+        nextTest.addEventListener('click', () => {
+          currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
+          renderTestimonial(currentTestimonialIndex);
+        });
+      }
+
+      /* ------------------------------------------------------------------------
+         8. FAQ Accordion
+         ------------------------------------------------------------------------ */
+      const faqItems = document.querySelectorAll('.faq-item');
+
+      faqItems.forEach(item => {
+        const header = item.querySelector('.faq-header');
+        header.addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+          faqItems.forEach(i => i.classList.remove('active'));
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+
+      /* ------------------------------------------------------------------------
+         9. Order Dropzone & Form Submission
+         ------------------------------------------------------------------------ */
+      const fileDropzone = document.getElementById('fileDropzone');
+      const photoFileInput = document.getElementById('photoFileInput');
+      const fileSelectedName = document.getElementById('fileSelectedName');
+      const orderForm = document.getElementById('orderIntakeForm');
+      const contactForm = document.getElementById('contactModalForm');
+      const toast = document.getElementById('toastMessage');
+      const toastText = document.getElementById('toastText');
+
+      const showToast = (msg) => {
+        toastText.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 4000);
+      };
+
+      let uploadedPhotoDataUrl = null;
+
+      if (fileDropzone && photoFileInput) {
+        fileDropzone.addEventListener('click', () => photoFileInput.click());
+
+        photoFileInput.addEventListener('change', () => {
+          if (photoFileInput.files && photoFileInput.files[0]) {
+            const file = photoFileInput.files[0];
+            fileSelectedName.textContent = `✓ Selected: ${file.name}`;
+            fileSelectedName.style.display = 'block';
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              uploadedPhotoDataUrl = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      if (orderForm) {
+        orderForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const nameInput = document.getElementById('orderClientName') ? document.getElementById('orderClientName').value.trim() : 'Valued Client';
+          const emailInput = document.getElementById('orderClientEmail') ? document.getElementById('orderClientEmail').value.trim().toLowerCase() : 'client@headshotlab.com';
+          const passwordInput = document.getElementById('orderClientPassword') ? document.getElementById('orderClientPassword').value : '';
+          const tierSelect = orderForm.querySelector('select') ? orderForm.querySelector('select').value : 'individual';
+          const isTeam = (tierSelect === 'team' || tierSelect === 'custom');
+          const bgSelect = orderForm.querySelectorAll('select')[1] ? orderForm.querySelectorAll('select')[1].value : 'neutral';
+          const notesText = orderForm.querySelector('textarea') ? orderForm.querySelector('textarea').value.trim() : '';
+
+          const packageName = isTeam ? 'Enterprise Team Headshots Pack' : (tierSelect === 'executive' ? 'Executive & Board Pack ($89)' : 'Individual Headshot ($29)');
+
+          // Prepare order details
+          const orderPayload = {
+            name: nameInput || 'Valued Client',
+            email: emailInput,
+            password: passwordInput,
+            type: isTeam ? 'team' : 'individual',
+            companyName: isTeam ? (nameInput + "'s Team") : '',
+            orderDetails: {
+              tier: tierSelect,
+              package: packageName,
+              backdrop: bgSelect,
+              notes: notesText,
+              photoUrl: uploadedPhotoDataUrl || ''
+            }
+          };
+
+          if (passwordInput.length < 8) {
+            showToast('Choose a password of at least 8 characters for your account.');
+            return;
+          }
+
+          showToast('Saving order to database...');
+
+          try {
+            const response = await fetch('/api/auth/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(orderPayload)
+            });
+
+            const resData = await response.json().catch(() => ({}));
+            if (response.ok && resData.success) {
+              showToast('Order saved in database! Opening your Client Portal...');
+              setTimeout(() => {
+                window.location.href = 'track.html';
+              }, 800);
+              return;
+            }
+
+            showToast(resData.error || 'Could not save your order. Please try again.');
+          } catch (apiErr) {
+            showToast('Could not reach the server. Please try again.');
+          }
+        });
+      }
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const inputs = contactForm.querySelectorAll('input');
+          const textarea = contactForm.querySelector('textarea');
+
+          const name = inputs[0] ? inputs[0].value.trim() : '';
+          const email = inputs[1] ? inputs[1].value.trim() : '';
+          const packageInterest = inputs[2] ? inputs[2].value.trim() : '';
+          const message = textarea ? textarea.value.trim() : '';
+
+          try {
+            await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, email, packageInterest, message })
+            });
+          } catch(err) {
+            console.warn('Could not reach contact API:', err);
+          }
+
+          closeModal();
+          showToast('Thank you! Your inquiry has been saved and sent to our team.');
+          contactForm.reset();
+        });
+      }
+
+    });
+  </script>
+</body>
+</html>

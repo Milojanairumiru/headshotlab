@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Local Environment & Secrets
+.env
+*.env.local
+
+# Database files (database is initialized automatically on startup)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.log
+
+# Backups and temporary test files
+wordpress-backups/
+index-backup-*.html
+test-*.html

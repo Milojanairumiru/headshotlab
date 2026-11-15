@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Portal & Headshot Tracker | HeadshotLab</title>
+  <meta name="description" content="Log in to your HeadshotLab account to track real-time retouching milestones, manage team headshots, and download your high-res gallery.">
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #f7f7f7;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-dark: #111215;
+      --bg-dark-card: #1c1d22;
+      --text-dark: #1a1a1a;
+      --text-muted: #666666;
+      --border-light: rgba(0, 0, 0, 0.08);
+      --font-serif: 'Playfair Display', serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --color-success: #15803d;
+      --bg-success: #f0fdf4;
+      --color-warn: #b45309;
+      --bg-warn: #fefce8;
+      --color-info: #1d4ed8;
+      --bg-info: #eff6ff;
+      --header-height: 80px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-primary);
+      color: var(--text-dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      background: rgba(247, 247, 247, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      z-index: 1000;
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+
+    .brand-logo-img {
+      height: 28px;
+      width: auto;
+      max-width: 180px;
+      display: block;
+      object-fit: contain;
+      transition: opacity 0.2s ease;
+    }
+
+    .brand-logo-img:hover {
+      opacity: 0.85;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text-dark);
+    }
+
+    .header-auth-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+
+    .btn-dark {
+      background: #1a1a1a;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    }
+
+    .btn-dark:hover {
+      background: #333;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: #1a1a1a;
+      border: 1px solid rgba(0,0,0,0.12);
+    }
+
+    .btn-outline:hover {
+      background: #f0f0f2;
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 8px 18px;
+      font-size: 0.85rem;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      padding: 40px 0 80px 0;
+    }
+
+    /* AUTH CARD (LOGGED-OUT VIEW) */
+    .auth-container {
+      max-width: 520px;
+      margin: 40px auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 32px;
+      padding: 48px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+      text-align: center;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      background: rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.06);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .auth-title {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .auth-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: #f0f0f2;
+      border-radius: 100px;
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 100px;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #666;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .auth-tab-btn.active {
+      background: #fff;
+      color: #1a1a1a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #444;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.12);
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      border-color: #1a1a1a;
+      box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
+    }
+
+    .quick-logins-box {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quick-logins-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .quick-demo-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: #f7f7f9;
+      border: 1px solid rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .quick-demo-btn:hover {
+      background: #fff;
+      border-color: #1a1a1a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transform: translateY(-1px);
+    }
+
+    /* DASHBOARD (LOGGED-IN VIEW) */
+    .dashboard-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .user-profile-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 28px;
+      padding: 32px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .user-info-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .user-avatar-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .user-details h2 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .user-details p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .account-badge.team {
+      background: #1d4ed8;
+    }
+
+    /* Order Details Card */
+    .order-status-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 28px;
+      padding: 36px 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    .status-pill.in-progress {
+      background: var(--bg-info);
+      color: var(--color-info);
+      border: 1px solid rgba(29, 78, 216, 0.15);
+    }
+
+    .status-pill.ready {
+      background: var(--bg-success);
+      color: var(--color-success);
+      border: 1px solid rgba(21, 128, 61, 0.2);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 0 rgba(29, 78, 216, 0.7);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(29, 78, 216, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(29, 78, 216, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(29, 78, 216, 0); }
+    }
+
+    /* Milestone Stepper */
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+    }
+
+    .timeline-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      position: relative;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      gap: 12px;
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 2;
+      background: #f0f0f2;
+      color: #888;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .step-line {
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      right: -20px;
+      height: 3px;
+      background: #e2e4e8;
+      z-index: 1;
+    }
+
+    .step-item:last-child .step-line {
+      display: none;
+    }
+
+    .step-item.completed .step-circle {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .step-item.completed .step-line {
+      background: #1a1a1a;
+    }
+
+    .step-item.active .step-circle {
+      background: #1d4ed8;
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.15);
+    }
+
+    .step-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Gallery Card */
+    .preview-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .photo-card {
+      border-radius: 20px;
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      background: #f2f3f5;
+      position: relative;
+      aspect-ratio: 4 / 5;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .photo-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    /* Team View Components */
+    .team-progress-card {
+      background: #111215;
+      color: #fff;
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+
+    .team-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .team-progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 100px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .team-progress-bar-fill {
+      height: 100%;
+      background: #fff;
+      border-radius: 100px;
+      transition: width 1s ease;
+    }
+
+    .roster-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+    }
+
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .roster-table th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      padding: 14px 16px;
+      border-bottom: 1.5px solid var(--border-light);
+    }
+
+    .roster-table td {
+      padding: 18px 16px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.95rem;
+    }
+
+    .member-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .member-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e2e4e8;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .badge-status.ready { background: var(--bg-success); color: var(--color-success); }
+    .badge-status.in-lab { background: var(--bg-info); color: var(--color-info); }
+    .badge-status.waiting { background: var(--bg-warn); color: var(--color-warn); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-light);
+      padding: 40px 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: #fff;
+    }
+
+    @media (max-width: 900px) {
+      .stepper {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .step-line {
+        display: none;
+      }
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+      .user-profile-bar, .order-status-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* ==========================================================================
+       NEW ORDER IN-PORTAL MODAL
+       ========================================================================== */
+    .portal-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 18, 21, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+
+    .portal-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .portal-modal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 28px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      position: relative;
+      transform: scale(0.96) translateY(12px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .portal-modal-overlay.active .portal-modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .portal-modal-header {
+      padding: 24px 28px 18px 28px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      z-index: 10;
+    }
+
+    .portal-modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+
+    .portal-modal-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .portal-modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      color: #555;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .portal-modal-close:hover {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .portal-modal-body {
+      padding: 24px 28px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .modal-grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .portal-modal-header,
+      .portal-modal-body {
+        padding: 18px;
+      }
+    }
+
+    /* Modal Drag and Drop Box */
+    .modal-dropzone {
+      border: 2px dashed rgba(255, 126, 29, 0.5);
+      background: rgba(255, 126, 29, 0.03);
+      border-radius: 20px;
+      padding: 26px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .modal-dropzone:hover,
+    .modal-dropzone.dragover {
+      border-color: #ff7e1d;
+      background: rgba(255, 126, 29, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .modal-dropzone-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 126, 29, 0.12);
+      color: #ff7e1d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px auto;
+    }
+
+    .modal-dropzone-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .modal-dropzone-hint {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    /* Upload Preview Box */
+    .upload-preview-box {
+      display: none;
+      align-items: center;
+      gap: 14px;
+      background: #f7f7f9;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      padding: 10px 14px;
+    }
+
+    .upload-preview-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .upload-preview-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .upload-preview-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #1a1a1a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .upload-preview-meta {
+      font-size: 0.78rem;
+      color: #15803d;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .upload-remove-btn {
+      background: none;
+      border: none;
+      color: #e11d48;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+    }
+
+    .upload-remove-btn:hover {
+      background: rgba(225, 29, 72, 0.08);
+    }
+
+    .sample-test-link {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 8px;
+      display: inline-block;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .sample-test-link:hover {
+      color: #ff7e1d;
+    }
+
+    .modal-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: rgba(255, 126, 29, 0.12);
+      color: #e65100;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="HeadshotLab Home">
+        <img src="assets/logo.png" alt="HeadshotLab" class="brand-logo-img">
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#work">Portfolio</a></li>
+          <li><a href="index.html#pricing">Pricing</a></li>
+          <li><a href="track.html" class="active">Client Portal</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-auth-box" id="headerAuthBox">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container">
+      
+      <!-- LOGGED OUT VIEW: Sign In / Create Account -->
+      <div id="authView" class="auth-container" style="display:none;">
+        <span class="tag-badge">HeadshotLab Account</span>
+        <h1 class="auth-title">Client Portal</h1>
+        <p class="auth-desc">Sign in with your email to track your headshot progress, request revisions, and download your high-res gallery.</p>
+
+        <!-- Auth Tabs -->
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab-btn active" id="tabSignIn" onclick="setAuthTab('signin')">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="tabSignUp" onclick="setAuthTab('signup')">Create Account</button>
+        </div>
+
+        <!-- Sign In Form -->
+        <form class="auth-form" id="signInForm" onsubmit="handleSignIn(event)">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="signInEmail" class="form-input" placeholder="you@company.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="signInPassword" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-dark" style="margin-top:10px; width:100%;">Sign In to Portal</button>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form class="auth-form" id="signUpForm" onsubmit="handleSignUp(event)" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="signUpName" class="form-input" placeholder="e.g. David Miller" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="signUpEmail" class="form-input" placeholder="you@company.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Account Type</label>
+            <select id="signUpType" class="form-input" style="background:#fff;">
+              <option value="individual">Individual Client</option>
+              <option value="team">Team / Corporate Account</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Create Password</label>
+            <input type="password" id="signUpPassword" class="form-input" placeholder="Create a password" required>
+          </div>
+          <button type="submit" class="btn btn-dark" style="margin-top:10px; width:100%;">Create Account & Enter</button>
+        </form>
+      </div>
+
+      <!-- LOGGED IN VIEW: CLIENT DASHBOARD -->
+      <div id="dashboardView" class="dashboard-wrapper" style="display:none;">
+        <!-- Profile / Header Bar -->
+        <div class="user-profile-bar">
+          <div class="user-info-group">
+            <div class="user-avatar-circle" id="userAvatar">D</div>
+            <div class="user-details">
+              <h2 id="userName">Welcome, David Miller</h2>
+              <p>
+                <span id="userEmail">david@acme.io</span>
+                <span class="account-badge" id="userBadge">Individual</span>
+              </p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; align-items:center;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="openNewOrderModal()">+ New Order</button>
+            <button class="btn btn-dark btn-sm" onclick="logout()">Sign Out</button>
+          </div>
+        </div>
+
+        <!-- Rendered Dashboard Content (Individual or Team) -->
+        <div id="dashboardContent"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       NEW ORDER / PHOTO UPLOAD MODAL (IN-PORTAL)
+       ========================================================================== -->
+  <div class="portal-modal-overlay" id="newOrderModal" onclick="handleModalOverlayClick(event)">
+    <div class="portal-modal-card">
+      <div class="portal-modal-header">
+        <div>
+          <span class="modal-tag-pill" id="modalTagPill">New Order Intake</span>
+          <h3 class="portal-modal-title" id="modalTitle">Create New Headshot Order</h3>
+          <p class="portal-modal-subtitle" id="modalSubtitle">Upload your raw selfie / portrait and customize your studio preferences.</p>
+        </div>
+        <button type="button" class="portal-modal-close" onclick="closeNewOrderModal()" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <form id="newOrderModalForm" class="portal-modal-body" onsubmit="handleNewOrderSubmit(event)">
+        <!-- Dynamic Team Fields -->
+        <div id="teamSpecificFields" style="display:none;">
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label class="form-label">TEAM MEMBER FULL NAME *</label>
+              <input type="text" id="newOrderMemberName" class="form-input" placeholder="e.g. Elena Rostova">
+            </div>
+            <div class="form-group">
+              <label class="form-label">WORK EMAIL ADDRESS *</label>
+              <input type="email" id="newOrderMemberEmail" class="form-input" placeholder="elena@company.com">
+            </div>
+          </div>
+          <div class="modal-grid-2" style="margin-top:14px;">
+            <div class="form-group">
+              <label class="form-label">DEPARTMENT / ROLE *</label>
+              <input type="text" id="newOrderMemberRole" class="form-input" placeholder="e.g. VP Marketing">
+            </div>
+            <div class="form-group">
+              <label class="form-label">PACKAGE TIER</label>
+              <input type="text" class="form-input" value="Team Member Headshot ($19)" readonly style="background:#f4f4f6; color:#555;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Individual Fields -->
+        <div id="individualSpecificFields">
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label class="form-label">PACKAGE / SERVICE TIER *</label>
+              <select id="newOrderTier" class="form-input" required>
+                <option value="individual">Individual Headshot ($29) — 1 Look • 2 Revisions</option>
+                <option value="executive">Executive &amp; Board Pack ($89) — 3 Looks • Unlimited Revisions</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">TURNAROUND PRIORITY</label>
+              <input type="text" class="form-input" value="Standard 48-Hour Studio Delivery" readonly style="background:#f4f4f6; color:#555;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Shared Customization Fields -->
+        <div class="modal-grid-2">
+          <div class="form-group">
+            <label class="form-label">BACKDROP PREFERENCE *</label>
+            <select id="newOrderBackdrop" class="form-input">
+              <option value="Modern Slate / Charcoal">Modern Slate / Charcoal</option>
+              <option value="Warm Neutral Linen">Warm Neutral Linen</option>
+              <option value="Soft Architectural Blur">Soft Architectural Blur</option>
+              <option value="Pure Studio White">Pure Studio White</option>
+              <option value="Company Corporate Gradient">Company Corporate Gradient</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">WARDROBE &amp; STYLING</label>
+            <select id="newOrderWardrobe" class="form-input">
+              <option value="Tailored Suit &amp; Tie">Tailored Suit &amp; Tie (Dark Charcoal / Navy)</option>
+              <option value="Executive Blazer &amp; Crewneck">Executive Blazer &amp; Crewneck</option>
+              <option value="Business Casual Collar Shirt">Business Casual Collar Shirt</option>
+              <option value="Original Clothing (Light Polish Only)">Original Clothing (Light Polish Only)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Photo Upload Dropzone -->
+        <div class="form-group">
+          <label class="form-label">RAW PHOTO / SELFIE UPLOAD *</label>
+          <input type="file" id="newOrderFileInput" accept="image/*" style="display:none;">
+          
+          <div class="modal-dropzone" id="newOrderDropzone" onclick="document.getElementById('newOrderFileInput').click()">
+            <div class="modal-dropzone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <div class="modal-dropzone-title">Click to upload or drag &amp; drop a photo</div>
+            <div class="modal-dropzone-hint">Supports high-res JPG, PNG, or HEIC (Up to 25MB) • Good lighting &amp; eye-level recommended</div>
+          </div>
+
+          <!-- Uploaded Preview -->
+          <div class="upload-preview-box" id="uploadPreviewBox">
+            <img src="" id="uploadPreviewImg" class="upload-preview-thumb" alt="Upload Preview">
+            <div class="upload-preview-info">
+              <div class="upload-preview-name" id="uploadPreviewName">filename.jpg</div>
+              <div class="upload-preview-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Photo ready for master retouching</span>
+              </div>
+            </div>
+            <button type="button" class="upload-remove-btn" onclick="removeUploadedPhoto(event)">Remove</button>
+          </div>
+
+          <div style="text-align:center;">
+            <span class="sample-test-link" onclick="useSampleSelfie(event)">⚡ Quick-test: Autofill with sample client selfie</span>
+          </div>
+        </div>
+
+        <!-- Special Retouching Notes -->
+        <div class="form-group">
+          <label class="form-label">SPECIAL RETOUCHING INSTRUCTIONS (OPTIONAL)</label>
+          <textarea id="newOrderNotes" class="form-input" rows="2" placeholder="e.g. Tone down reflections on glasses, preserve natural freckles, soften flyaway hairs..."></textarea>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div style="display:flex; gap:12px; align-items:center; justify-content:flex-end; margin-top:8px;">
+          <button type="button" class="btn btn-outline" onclick="closeNewOrderModal()">Cancel</button>
+          <button type="submit" class="btn btn-dark" id="submitOrderBtn" style="min-width:240px;">
+            <span>Submit Order &amp; Start Retouching &rarr;</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">Link copied to clipboard!</div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      &copy; 2026 HeadshotLab Inc. Editorial Quality Headshots for Modern Leaders.
+    </div>
+  </footer>
+
+  <script>
+    let currentUser = null;
+
+    // The browser keeps only the non-sensitive profile in memory. The session
+    // itself is an HttpOnly cookie issued and checked by the server.
+    function normalizeUser(user, order) {
+      if (!user) return null;
+      return {
+        ...user,
+        companyName: user.company_name || user.companyName || '',
+        order: order || user.order || null
+      };
+    }
+
+    async function loadSession() {
+      try {
+        const res = await fetch('/api/auth/me', { cache: 'no-store' });
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data.success ? normalizeUser(data.user, data.order) : null;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    async function init() {
+      // Drop any legacy profile (including demo data) cached by older builds.
+      localStorage.removeItem('headshotlab_current_user');
+      const user = await loadSession();
+      if (user) {
+        currentUser = user;
+        renderDashboard(user);
+        return;
+      }
+      renderAuthView();
+    }
+
+    function setAuthTab(tab) {
+      const btnIn = document.getElementById('tabSignIn');
+      const btnUp = document.getElementById('tabSignUp');
+      const formIn = document.getElementById('signInForm');
+      const formUp = document.getElementById('signUpForm');
+
+      if (tab === 'signin') {
+        btnIn.classList.add('active');
+        btnUp.classList.remove('active');
+        formIn.style.display = 'flex';
+        formUp.style.display = 'none';
+      } else {
+        btnUp.classList.add('active');
+        btnIn.classList.remove('active');
+        formUp.style.display = 'flex';
+        formIn.style.display = 'none';
+      }
+    }
+
+    async function handleSignIn(e) {
+      e.preventDefault();
+      const email = document.getElementById('signInEmail').value.trim().toLowerCase();
+      const password = document.getElementById('signInPassword') ? document.getElementById('signInPassword').value : '';
+
+      if (!email || !password) {
+        showToast('Enter your email and password.');
+        return;
+      }
+
+      showToast('Signing in...');
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.success) {
+          loginUser(normalizeUser(data.user, data.order));
+          return;
+        }
+        showToast(data.error || 'Sign in failed. Please check your details.');
+      } catch (err) {
+        showToast('Could not reach the server. Try again.');
+      }
+    }
+
+    async function handleSignUp(e) {
+      e.preventDefault();
+      const name = document.getElementById('signUpName').value.trim();
+      const email = document.getElementById('signUpEmail').value.trim().toLowerCase();
+      const type = document.getElementById('signUpType').value;
+      const password = document.getElementById('signUpPassword') ? document.getElementById('signUpPassword').value : '';
+
+      if (password.length < 8) {
+        showToast('Choose a password of at least 8 characters.');
+        return;
+      }
+
+      showToast('Creating account...');
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            type,
+            companyName: type === 'team' ? (name + "'s Organization") : '',
+            orderDetails: {
+              tier: type,
+              package: type === 'team' ? 'Enterprise Team Headshots Pack' : 'Executive Studio Headshot Pack',
+              photoUrl: 'assets/before_casual.jpg'
+            }
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.success) {
+          loginUser(normalizeUser(data.user, data.order));
+          return;
+        }
+        showToast(data.error || 'Could not create the account.');
+      } catch (err) {
+        showToast('Could not reach the server. Try again.');
+      }
+    }
+
+    function loginUser(user) {
+      if (!user) return;
+      currentUser = user;
+      showToast(`Welcome back, ${user.name}!`);
+      renderDashboard(user);
+    }
+
+    async function logout() {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch (err) {
+        // The local view is cleared regardless.
+      }
+      currentUser = null;
+      showToast('You have signed out.');
+      renderAuthView();
+    }
+
+    function renderAuthView() {
+      document.getElementById('authView').style.display = 'block';
+      document.getElementById('dashboardView').style.display = 'none';
+      document.getElementById('headerAuthBox').innerHTML = `
+        <button class="btn btn-dark" onclick="openNewOrderModal()">New Order</button>
+      `;
+    }
+
+    function renderDashboard(user) {
+      document.getElementById('authView').style.display = 'none';
+      document.getElementById('dashboardView').style.display = 'flex';
+
+      // Header auth
+      document.getElementById('headerAuthBox').innerHTML = `
+        <span style="font-size:0.9rem; font-weight:600; color:#1a1a1a;">👤 ${user.name.split(' ')[0]}</span>
+        <button class="btn btn-outline btn-sm" onclick="logout()">Sign Out</button>
+      `;
+
+      // Profile Bar
+      document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+      document.getElementById('userName').textContent = `Welcome, ${user.name}`;
+      document.getElementById('userEmail').textContent = user.email;
+      const badge = document.getElementById('userBadge');
+      if (user.type === 'team') {
+        badge.textContent = 'Team Lead';
+        badge.className = 'account-badge team';
+      } else {
+        badge.textContent = 'Individual';
+        badge.className = 'account-badge';
+      }
+
+      // Content
+      const content = document.getElementById('dashboardContent');
+      if (!user.order) {
+        content.innerHTML = `
+          <div style="background:#fff; border:1px solid #e5e5e5; border-radius:16px; padding:40px; text-align:center;">
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem; margin-bottom:10px;">No active order yet</h3>
+            <p style="color:#666; margin-bottom:20px;">Start an order and your production milestones will appear here.</p>
+            <button class="btn btn-dark" onclick="openNewOrderModal()">New Order</button>
+          </div>
+        `;
+        return;
+      }
+      if (user.type === 'team') {
+        renderTeamDashboard(user, content);
+      } else {
+        renderIndividualDashboard(user, content);
+      }
+    }
+
+    function renderIndividualDashboard(user, container) {
+      const order = user.order;
+
+      let stepsHtml = '';
+      order.steps.forEach((step, idx) => {
+        const isDone = step.completed;
+        const isActive = step.active;
+        const itemClass = isDone ? 'completed' : (isActive ? 'active' : '');
+        stepsHtml += `
+          <div class="step-item ${itemClass}">
+            <div class="step-indicator">
+              <div class="step-circle">${isDone ? '✓' : (idx + 1)}</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h4>${step.title}</h4>
+              <p>${step.desc}</p>
+            </div>
+          </div>
+        `;
+      });
+
+      let photosHtml = '';
+      order.photos.forEach(p => {
+        photosHtml += `
+          <div class="photo-card">
+            <img src="${p.url}" alt="${p.title}" onerror="this.src='hero_person_nobg.png'">
+            <div class="photo-overlay">
+              <div>
+                <strong style="font-size: 0.95rem; display:block;">${p.title}</strong>
+                <span class="photo-tag">${p.tag}</span>
+              </div>
+              ${p.ready ? `<button class="btn btn-dark" style="padding: 6px 14px; font-size: 0.78rem;" onclick="triggerDownload('${p.title}')">Download</button>` : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:32px;">
+          <!-- Order Summary Card -->
+          <div class="order-status-card">
+            <div>
+              <span style="font-size:0.85rem; color:#666;">Active Order: <strong>#${order.id}</strong> • Placed on ${order.orderDate}</span>
+              <h3 style="font-family:var(--font-serif); font-size:1.8rem; font-weight:700; margin-top:4px;">${order.package}</h3>
+              <p style="color:#666; font-size:0.95rem;">Delivery ETA: <strong>${order.eta}</strong></p>
+            </div>
+            <div>
+              <span class="status-pill ${order.statusClass}">
+                <span class="pulse-dot"></span>
+                ${order.statusText}
+              </span>
+            </div>
+          </div>
+
+          <!-- Stepper Timeline -->
+          <div class="timeline-card">
+            <div class="timeline-title">
+              <span>Production Milestones</span>
+              <span style="font-family:var(--font-body); font-size:0.9rem; color:#666;">Real-time lab progress</span>
+            </div>
+            <div class="stepper">
+              ${stepsHtml}
+            </div>
+          </div>
+
+          <!-- Gallery Preview -->
+          <div class="preview-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                <h3 style="font-family:var(--font-serif); font-size:1.4rem; font-weight:700;">Your Editorial Gallery</h3>
+                <p style="color:#666; font-size:0.9rem;">High-resolution deliverables optimized for LinkedIn, company sites, and print.</p>
+              </div>
+              <button class="btn btn-dark" onclick="triggerDownload('Full High-Res Package (ZIP)')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download All (ZIP)
+              </button>
+            </div>
+            <div class="preview-grid">
+              ${photosHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTeamDashboard(user, container) {
+      const order = user.order;
+      const percent = order.totalMembers ? Math.round((order.completedCount / order.totalMembers) * 100) : 0;
+
+      let rowsHtml = '';
+      order.roster.forEach(m => {
+        rowsHtml += `
+          <tr data-status="${m.statusClass}">
+            <td>
+              <div class="member-cell">
+                <img src="hero_person_nobg.png" class="member-avatar" alt="${m.name}">
+                <div>
+                  <div style="font-weight:600; color:#1a1a1a;">${m.name}</div>
+                  <div style="font-size:0.8rem; color:#666;">${m.role}</div>
+                </div>
+              </div>
+            </td>
+            <td style="color:#666;">${m.email}</td>
+            <td>
+              <span class="badge-status ${m.statusClass}">${m.status}</span>
+            </td>
+            <td>
+              ${m.status === 'Ready' 
+                ? `<button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8rem;" onclick="triggerDownload('${m.name} Headshot')">Download</button>`
+                : (m.status === 'Awaiting Upload' 
+                  ? `<button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8rem;" onclick="showToast('Reminder email sent to ${m.email}')">Send Reminder</button>`
+                  : `<span style="font-size:0.85rem; color:#666;">In Retouching</span>`)}
+            </td>
+          </tr>
+        `;
+      });
+
+      container.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:32px;">
+          <!-- Team Header -->
+          <div class="team-progress-card">
+            <div class="team-header">
+              <div>
+                <span style="font-size:0.85rem; color:#a0a4b0;">Enterprise Dashboard • Order #${order.id}</span>
+                <h2 style="font-family:var(--font-serif); font-size:2rem; font-weight:700;">${user.companyName || 'Corporate Team'}</h2>
+                <p style="color:#a0a4b0; font-size:0.95rem;">${order.package}</p>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:2.4rem; font-weight:700;">${order.completedCount} <span style="font-size:1.2rem; color:#a0a4b0;">/ ${order.totalMembers}</span></div>
+                <div style="font-size:0.85rem; color:#a0a4b0;">Headshots Completed (${percent}%)</div>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="team-progress-bar-bg">
+              <div class="team-progress-bar-fill" style="width: ${percent}%;"></div>
+            </div>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+              <button class="btn btn-dark" style="background:#fff; color:#1a1a1a;" onclick="copyInviteLink('${order.inviteUrl}')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy Employee Upload Portal Link
+              </button>
+              <button class="btn btn-outline" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:#fff;" onclick="triggerDownload('Full Team Deliverables (ZIP)')">
+                Download All 18 Completed (ZIP)
+              </button>
+            </div>
+          </div>
+
+          <!-- Roster Table -->
+          <div class="roster-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                <h3 style="font-family:var(--font-serif); font-size:1.4rem; font-weight:700;">Employee Submission Roster</h3>
+                <p style="color:#666; font-size:0.9rem;">Track who has uploaded photos and download finished deliverables.</p>
+              </div>
+
+              <!-- Filter Tabs -->
+              <div style="display:flex; gap:8px; background:#f0f0f2; padding:4px; border-radius:100px;">
+                <button class="tab-btn active" onclick="filterRoster('all', this)">All (${order.totalMembers})</button>
+                <button class="tab-btn" onclick="filterRoster('ready', this)">Ready (${order.completedCount})</button>
+                <button class="tab-btn" onclick="filterRoster('in-lab', this)">In Lab (${order.inProgressCount})</button>
+                <button class="tab-btn" onclick="filterRoster('waiting', this)">Waiting (${order.waitingCount})</button>
+              </div>
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table class="roster-table" id="rosterTable">
+                <thead>
+                  <tr>
+                    <th>Team Member</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterRoster(status, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const rows = document.querySelectorAll('#rosterTable tbody tr');
+      rows.forEach(r => {
+        if (status === 'all' || r.getAttribute('data-status') === status) {
+          r.style.display = '';
+        } else {
+          r.style.display = 'none';
+        }
+      });
+    }
+
+    function copyInviteLink(url) {
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('Employee upload portal link copied!');
+      }).catch(() => {
+        showToast('Link: ' + url);
+      });
+    }
+
+    function triggerDownload(name) {
+      showToast('Downloading ' + name + '...');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    /* ------------------------------------------------------------------------
+       In-Portal New Order Modal Logic
+       ------------------------------------------------------------------------ */
+    let selectedPhotoDataUrl = null;
+
+    function openNewOrderModal() {
+      const user = currentUser;
+
+      if (!user) {
+        showToast('Please sign in first.');
+        return;
+      }
+
+      const modal = document.getElementById('newOrderModal');
+      const teamFields = document.getElementById('teamSpecificFields');
+      const indFields = document.getElementById('individualSpecificFields');
+      const title = document.getElementById('modalTitle');
+      const subtitle = document.getElementById('modalSubtitle');
+      const tagPill = document.getElementById('modalTagPill');
+
+      if (user.type === 'team') {
+        teamFields.style.display = 'block';
+        indFields.style.display = 'none';
+        tagPill.textContent = 'Team Member Intake • ' + (user.companyName || 'Corporate');
+        title.textContent = 'Add Team Member Headshot';
+        subtitle.textContent = 'Submit a new employee photo to your corporate team roster.';
+        document.getElementById('newOrderMemberName').required = true;
+        document.getElementById('newOrderMemberEmail').required = true;
+        document.getElementById('newOrderMemberRole').required = true;
+      } else {
+        teamFields.style.display = 'none';
+        indFields.style.display = 'block';
+        tagPill.textContent = 'Individual Order • ' + user.name;
+        title.textContent = 'Create New Headshot Order';
+        subtitle.textContent = 'Upload your raw selfie / portrait and customize your studio preferences.';
+        document.getElementById('newOrderMemberName').required = false;
+        document.getElementById('newOrderMemberEmail').required = false;
+        document.getElementById('newOrderMemberRole').required = false;
+      }
+
+      // Reset file upload
+      removeUploadedPhoto();
+      document.getElementById('newOrderNotes').value = '';
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeNewOrderModal() {
+      const modal = document.getElementById('newOrderModal');
+      if (modal) modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target && e.target.id === 'newOrderModal') {
+        closeNewOrderModal();
+      }
+    }
+
+    function processSelectedFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        selectedPhotoDataUrl = e.target.result;
+        document.getElementById('uploadPreviewImg').src = selectedPhotoDataUrl;
+        document.getElementById('uploadPreviewName').textContent = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+        document.getElementById('uploadPreviewBox').style.display = 'flex';
+        document.getElementById('newOrderDropzone').style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function useSampleSelfie(e) {
+      if (e) e.stopPropagation();
+      selectedPhotoDataUrl = 'assets/before_casual.jpg';
+      document.getElementById('uploadPreviewImg').src = selectedPhotoDataUrl;
+      document.getElementById('uploadPreviewName').textContent = 'client_raw_selfie.jpg (Verified 1024x1024)';
+      document.getElementById('uploadPreviewBox').style.display = 'flex';
+      document.getElementById('newOrderDropzone').style.display = 'none';
+      showToast('Loaded sample client photo for testing!');
+    }
+
+    function removeUploadedPhoto(e) {
+      if (e) e.stopPropagation();
+      selectedPhotoDataUrl = null;
+      const fileInput = document.getElementById('newOrderFileInput');
+      if (fileInput) fileInput.value = '';
+      const previewBox = document.getElementById('uploadPreviewBox');
+      const dropzone = document.getElementById('newOrderDropzone');
+      if (previewBox) previewBox.style.display = 'none';
+      if (dropzone) dropzone.style.display = 'block';
+    }
+
+    async function handleNewOrderSubmit(e) {
+      e.preventDefault();
+      let user = currentUser;
+      if (!user) return;
+
+      const photoUrl = selectedPhotoDataUrl || 'assets/before_casual.jpg';
+      const backdrop = document.getElementById('newOrderBackdrop').value;
+      const wardrobe = document.getElementById('newOrderWardrobe').value;
+
+      if (user.type === 'team') {
+        const memberName = document.getElementById('newOrderMemberName').value.trim() || 'New Team Member';
+        const memberEmail = document.getElementById('newOrderMemberEmail').value.trim() || 'member@company.com';
+        const memberRole = document.getElementById('newOrderMemberRole').value.trim() || 'Staff Specialist';
+
+        try {
+          const res = await fetch('/api/orders/roster', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              orderId: user.order.id,
+              member: {
+                name: memberName,
+                role: memberRole,
+                email: memberEmail,
+                photoUrl: photoUrl
+              }
+            })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.success) {
+            showToast(data.error || 'Could not add the team member.');
+            return;
+          }
+          if (data.order) {
+            user = normalizeUser(user, data.order);
+            currentUser = user;
+          }
+        } catch (err) {
+          showToast('Could not reach the server. Try again.');
+          return;
+        }
+
+        closeNewOrderModal();
+        showToast(`🎉 New order submitted! ${memberName} added to roster in lab.`);
+        renderDashboard(currentUser || user);
+      } else {
+        const tierSelect = document.getElementById('newOrderTier');
+        const tierName = tierSelect.value === 'executive' ? 'Executive & Board Pack ($89)' : 'Individual Headshot ($29)';
+        const newOrderId = 'HL-IND-' + Math.floor(1000 + Math.random() * 9000);
+
+        if (!user.order.photos) user.order.photos = [];
+        user.order.photos.unshift({
+          title: 'New Order #' + newOrderId + ' (' + backdrop + ')',
+          tag: 'In Production (Master Retouching)',
+          url: photoUrl,
+          ready: false
+        });
+
+        user.order.id = newOrderId;
+        user.order.package = tierName;
+        user.order.orderDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        user.order.eta = 'In ~48 hours';
+        user.order.statusText = 'In Production (AI & Master Retouching)';
+        user.order.statusClass = 'in-progress';
+        user.order.currentStep = 3;
+
+        currentUser = user;
+        closeNewOrderModal();
+        showToast(`🎉 Order #${newOrderId} placed! Photo queued for retouching.`);
+        renderDashboard(user);
+      }
+    }
+
+    // Attach Dropzone Events
+    function attachDropzoneEvents() {
+      const dropzone = document.getElementById('newOrderDropzone');
+      const fileInput = document.getElementById('newOrderFileInput');
+
+      if (dropzone && fileInput) {
+        ['dragenter', 'dragover'].forEach(name => {
+          dropzone.addEventListener(name, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('dragover');
+          });
+        });
+
+        ['dragleave', 'drop'].forEach(name => {
+          dropzone.addEventListener(name, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('dragover');
+          });
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processSelectedFile(e.dataTransfer.files[0]);
+          }
+        });
+
+        fileInput.addEventListener('change', () => {
+          if (fileInput.files && fileInput.files[0]) {
+            processSelectedFile(fileInput.files[0]);
+          }
+        });
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeNewOrderModal();
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      init();
+      attachDropzoneEvents();
+    });
+  </script>
+</body>
+</html>

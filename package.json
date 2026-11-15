@@ -1,0 +1,17 @@
+{
+  "name": "headshotlab-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HeadshotLab marketing site, client portal and admin console",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "jpeg-js": "^0.4.4",
+    "pngjs": "^7.0.0"
+  }
+}
