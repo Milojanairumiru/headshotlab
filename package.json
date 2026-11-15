@@ -11,7 +11,9 @@
     "node": ">=22.5.0"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "jpeg-js": "^0.4.4",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "serverless-http": "^4.0.0"
   }
 }
