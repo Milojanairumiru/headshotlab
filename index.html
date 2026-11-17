@@ -2826,7 +2826,7 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
     }
 
-    .form-label {
+    .order-section .form-label {
       font-family: var(--font-body) !important;
       font-size: 13px !important;
       font-weight: 600 !important;
@@ -2834,7 +2834,7 @@
       color: #a0a4b0 !important;
     }
 
-    .form-control {
+    .order-section .form-control {
       border-radius: 14px !important;
       background: rgba(255, 255, 255, 0.05) !important;
       border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -2842,9 +2842,52 @@
       padding: 14px 18px !important;
     }
 
-    .form-control:focus {
+    .order-section .form-control:focus {
       border-color: #ffffff !important;
       background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* Contact Modal Inputs: Pure black text on white card */
+    .modal-right .form-group {
+      margin-bottom: 20px !important;
+    }
+
+    .modal-right .form-label {
+      display: block !important;
+      font-family: var(--font-body) !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px !important;
+      text-transform: uppercase !important;
+      color: #1a1a1a !important;
+      margin-bottom: 8px !important;
+    }
+
+    .modal-right .form-control {
+      width: 100% !important;
+      background: #ffffff !important;
+      color: #1a1a1a !important;
+      border: 1px solid rgba(0, 0, 0, 0.15) !important;
+      border-radius: 14px !important;
+      padding: 14px 18px !important;
+      font-size: 15px !important;
+      font-family: var(--font-body) !important;
+      outline: none !important;
+      transition: var(--transition-smooth) !important;
+      -webkit-text-fill-color: #1a1a1a !important;
+    }
+
+    .modal-right .form-control::placeholder {
+      color: #8e909a !important;
+      -webkit-text-fill-color: #8e909a !important;
+      opacity: 1 !important;
+    }
+
+    .modal-right .form-control:focus {
+      border-color: #1a1a1a !important;
+      background: #ffffff !important;
+      color: #1a1a1a !important;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06) !important;
     }
 
     .file-dropzone {
@@ -3903,25 +3946,28 @@
         </div>
 
         <div class="modal-right">
-          <form id="contactModalForm">
+          <form id="contactModalForm" name="contact" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact" />
+            <p style="display:none;"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+
             <div class="form-group">
               <label class="form-label">YOUR NAME *</label>
-              <input type="text" class="form-control" placeholder="Jane Doe" required>
+              <input type="text" name="name" id="contactNameInput" class="form-control" placeholder="Jane Doe" required>
             </div>
 
             <div class="form-group">
               <label class="form-label">YOUR EMAIL *</label>
-              <input type="email" class="form-control" placeholder="jane@company.com" required>
+              <input type="email" name="email" id="contactEmailInput" class="form-control" placeholder="jane@company.com" required>
             </div>
 
             <div class="form-group">
               <label class="form-label">SUBJECT</label>
-              <input type="text" class="form-control" placeholder="Headshot Inquiry / Team Proposal">
+              <input type="text" name="subject" id="contactSubjectInput" class="form-control" placeholder="Headshot Inquiry / Team Proposal">
             </div>
 
             <div class="form-group">
               <label class="form-label">MESSAGE *</label>
-              <textarea class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
+              <textarea name="message" id="contactMessageInput" class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
             </div>
 
             <button type="submit" class="btn btn-solid-dark" style="width:100%; margin-top:10px;">
@@ -4303,14 +4349,28 @@
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const inputs = contactForm.querySelectorAll('input');
-          const textarea = contactForm.querySelector('textarea');
+          const name = document.getElementById('contactNameInput') ? document.getElementById('contactNameInput').value.trim() : '';
+          const email = document.getElementById('contactEmailInput') ? document.getElementById('contactEmailInput').value.trim() : '';
+          const packageInterest = document.getElementById('contactSubjectInput') ? document.getElementById('contactSubjectInput').value.trim() : '';
+          const message = document.getElementById('contactMessageInput') ? document.getElementById('contactMessageInput').value.trim() : '';
 
-          const name = inputs[0] ? inputs[0].value.trim() : '';
-          const email = inputs[1] ? inputs[1].value.trim() : '';
-          const packageInterest = inputs[2] ? inputs[2].value.trim() : '';
-          const message = textarea ? textarea.value.trim() : '';
+          // 1. Submit to Netlify Forms (triggers automatic email notification on Netlify to contact@headshotlab.us)
+          try {
+            const netlifyBody = new URLSearchParams({
+              'form-name': 'contact',
+              name: name,
+              email: email,
+              subject: packageInterest,
+              message: message
+            });
+            fetch('/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: netlifyBody.toString()
+            }).catch(e => console.warn('Netlify form notice:', e));
+          } catch(nfErr) {}
 
+          // 2. Submit to database API (/api/contact) to save inquiry for Admin Console
           try {
             await fetch('/api/contact', {
               method: 'POST',
@@ -4322,7 +4382,7 @@
           }
 
           closeModal();
-          showToast('Thank you! Your inquiry has been saved and sent to our team.');
+          showToast('Thank you! Your message has been sent to contact@headshotlab.us');
           contactForm.reset();
         });
       }

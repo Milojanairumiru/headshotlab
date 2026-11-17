@@ -477,6 +477,28 @@ async function handleContact(req, res) {
   }
 
   const contact = DB.createContact({ name, email, packageInterest, message });
+
+  if (process.env.RESEND_API_KEY) {
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: process.env.EMAIL_FROM || 'HeadshotLab <onboarding@resend.dev>',
+          to: ['contact@headshotlab.us'],
+          reply_to: email,
+          subject: `New HeadshotLab Inquiry: ${packageInterest || 'General Inquiry'} from ${name}`,
+          text: `New contact form submission from HeadshotLab website:\n\nName: ${name}\nEmail: ${email}\nSubject/Interest: ${packageInterest}\n\nMessage:\n${message}\n\nSubmitted at: ${new Date().toISOString()}`
+        })
+      });
+    } catch (err) {
+      console.error('Resend email error:', err);
+    }
+  }
+
   return sendJson(res, 201, { success: true, contact, message: 'Inquiry saved successfully' });
 }
 
