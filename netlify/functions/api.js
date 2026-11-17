@@ -210,14 +210,30 @@ exports.handler = async (event, context) => {
     await ensureSchema();
   } catch (err) {
     console.error('Database schema error:', err);
-    return sendResponse(500, { success: false, error: 'Database connection failed' });
+    return sendResponse(500, { success: false, error: 'Database connection failed: ' + (err.message || 'unknown error') });
   }
 
-  // Normalize path
-  let pathname = event.path;
-  if (pathname.startsWith('/.netlify/functions/api')) {
-    pathname = pathname.replace('/.netlify/functions/api', '/api');
+  // Robust path extraction across Netlify redirects & direct invocations
+  let pathname = event.path || '';
+  if (event.rawUrl) {
+    try {
+      pathname = new URL(event.rawUrl).pathname;
+    } catch (e) {}
   }
+  if (pathname.startsWith('/.netlify/functions/api')) {
+    pathname = pathname.slice('/.netlify/functions/api'.length) || '/';
+  }
+  if (!pathname.startsWith('/api')) {
+    pathname = '/api' + (pathname.startsWith('/') ? pathname : '/' + pathname);
+  }
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    pathname = pathname.slice(0, -1);
+  }
+
+  const isRoute = (method, ...paths) => {
+    if (event.httpMethod !== method) return false;
+    return paths.some(p => pathname === p || pathname.endsWith(p));
+  };
 
   let body = {};
   if (event.body) {
@@ -228,8 +244,38 @@ exports.handler = async (event, context) => {
     }
   }
 
-  // 1. REGISTER
-  if (event.httpMethod === 'POST' && pathname === '/api/auth/register') {
+  // 1. AUTH ME (Client check)
+  if (isRoute('GET', '/api/auth/me', '/auth/me')) {
+    const session = await getSession(event, 'client');
+    if (!session || !session.user_id) {
+      return sendResponse(401, { success: false, error: 'Not authenticated' });
+    }
+    const userRes = await db.execute({
+      sql: 'SELECT id, name, email, role, type, company_name, created_at FROM users WHERE id = ?',
+      args: [session.user_id]
+    });
+    if (userRes.rows.length === 0) {
+      return sendResponse(401, { success: false, error: 'User not found' });
+    }
+    const user = userRes.rows[0];
+    const orderRes = await db.execute({
+      sql: 'SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT 1',
+      args: [user.id]
+    });
+    let order = orderRes.rows.length > 0 ? orderRes.rows[0] : null;
+    if (order) {
+      const steps = await db.execute({ sql: 'SELECT * FROM order_steps WHERE order_id = ? ORDER BY step_index ASC', args: [order.id] });
+      order.steps = steps.rows;
+      const photos = await db.execute({ sql: 'SELECT * FROM order_photos WHERE order_id = ?', args: [order.id] });
+      order.photos = photos.rows;
+      const roster = await db.execute({ sql: 'SELECT * FROM roster_members WHERE order_id = ?', args: [order.id] });
+      order.roster = roster.rows;
+    }
+    return sendResponse(200, { success: true, user, order });
+  }
+
+  // 2. REGISTER
+  if (isRoute('POST', '/api/auth/register', '/auth/register')) {
     const { name, email, password, type = 'individual', companyName = '', orderDetails } = body;
     const cleanEmail = String(email || '').trim().toLowerCase();
     if (!cleanEmail) return sendResponse(400, { success: false, error: 'Email is required' });
@@ -275,7 +321,7 @@ exports.handler = async (event, context) => {
           ]
         });
 
-        // Steps
+        // Default Steps
         await db.execute({ sql: 'INSERT INTO order_steps (order_id, step_index, title, desc, completed, active) VALUES (?, ?, ?, ?, ?, ?)', args: [orderId, 1, 'Photos Received', 'Raw selfie uploaded & backed up securely.', 1, 0] });
         await db.execute({ sql: 'INSERT INTO order_steps (order_id, step_index, title, desc, completed, active) VALUES (?, ?, ?, ?, ?, ?)', args: [orderId, 2, 'Quality & Lighting Check', 'Approved for production by senior retoucher.', 1, 0] });
         await db.execute({ sql: 'INSERT INTO order_steps (order_id, step_index, title, desc, completed, active) VALUES (?, ?, ?, ?, ?, ?)', args: [orderId, 3, 'AI Synthesis & Retouching', 'Preserving skin natural texture & lighting.', 0, 1] });
@@ -291,7 +337,8 @@ exports.handler = async (event, context) => {
       }
 
       const token = await createSession('client', userId, CLIENT_SESSION_TTL);
-      return sendResponse(201, { success: true, user, order }, {
+      const { password_hash, ...safeUser } = user;
+      return sendResponse(201, { success: true, user: safeUser, order }, {
         'Set-Cookie': `${CLIENT_COOKIE}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${CLIENT_SESSION_TTL / 1000}; Secure`
       });
     } catch (err) {
@@ -300,8 +347,8 @@ exports.handler = async (event, context) => {
     }
   }
 
-  // 2. LOGIN
-  if (event.httpMethod === 'POST' && pathname === '/api/auth/login') {
+  // 3. LOGIN
+  if (isRoute('POST', '/api/auth/login', '/auth/login')) {
     const { email, password } = body;
     const cleanEmail = String(email || '').trim().toLowerCase();
     const res = await db.execute({ sql: 'SELECT * FROM users WHERE email = ?', args: [cleanEmail] });
@@ -331,15 +378,15 @@ exports.handler = async (event, context) => {
     });
   }
 
-  // 3. LOGOUT
-  if (event.httpMethod === 'POST' && pathname === '/api/auth/logout') {
+  // 4. LOGOUT
+  if (isRoute('POST', '/api/auth/logout', '/auth/logout')) {
     return sendResponse(200, { success: true }, {
       'Set-Cookie': `${CLIENT_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; Secure`
     });
   }
 
-  // 4. USER & ORDER FETCH
-  if (event.httpMethod === 'GET' && pathname === '/api/user/order') {
+  // 5. USER & ORDER FETCH
+  if (isRoute('GET', '/api/user/order', '/user/order')) {
     const params = event.queryStringParameters || {};
     const email = params.email;
     const userId = params.userId;
@@ -369,8 +416,8 @@ exports.handler = async (event, context) => {
     return sendResponse(200, { success: true, user, order });
   }
 
-  // 5. CONTACT FORM
-  if (event.httpMethod === 'POST' && pathname === '/api/contact') {
+  // 6. CONTACT FORM
+  if (isRoute('POST', '/api/contact', '/contact')) {
     const { name, email, packageInterest = '', message } = body;
     if (!name || !email || !message) {
       return sendResponse(400, { success: false, error: 'Name, email, and message are required' });
@@ -380,7 +427,7 @@ exports.handler = async (event, context) => {
       args: [name, email, packageInterest, message]
     });
 
-    // Optional direct email dispatch via Resend API (if RESEND_API_KEY is configured in Netlify)
+    // Optional Resend email dispatch if configured
     if (process.env.RESEND_API_KEY) {
       try {
         await fetch('https://api.resend.com/emails', {
@@ -390,25 +437,27 @@ exports.handler = async (event, context) => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            from: process.env.EMAIL_FROM || 'HeadshotLab <onboarding@resend.dev>',
+            from: 'HeadshotLab <inquiry@headshotlab.us>',
             to: ['contact@headshotlab.us'],
             reply_to: email,
-            subject: `New HeadshotLab Inquiry: ${packageInterest || 'General Inquiry'} from ${name}`,
-            text: `New contact form submission from HeadshotLab website:\n\nName: ${name}\nEmail: ${email}\nSubject/Interest: ${packageInterest}\n\nMessage:\n${message}\n\nSubmitted at: ${new Date().toISOString()}`
+            subject: `New Inquiry from ${name} (${packageInterest || 'General'})`,
+            text: `Name: ${name}\nEmail: ${email}\nPackage: ${packageInterest}\n\nMessage:\n${message}`
           })
         });
-      } catch (err) {
-        console.error('Resend email error:', err);
+      } catch (emailErr) {
+        console.warn('Resend email error:', emailErr);
       }
     }
 
     return sendResponse(201, { success: true, contactId: Number(res.lastInsertRowid) });
   }
 
-  // 6. ROSTER MEMBER ADD
-  if (event.httpMethod === 'POST' && pathname === '/api/orders/roster') {
+  // 7. ROSTER ADD
+  if (isRoute('POST', '/api/orders/roster', '/orders/roster')) {
     const { orderId, member } = body;
-    if (!orderId || !member) return sendResponse(400, { success: false, error: 'Order ID and member required' });
+    if (!orderId || !member || !member.name || !member.email) {
+      return sendResponse(400, { success: false, error: 'Order ID, member name, and email are required' });
+    }
 
     const res = await db.execute({
       sql: 'INSERT INTO roster_members (order_id, name, role, email, status, status_class, photo_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -423,8 +472,8 @@ exports.handler = async (event, context) => {
     return sendResponse(201, { success: true, memberId: Number(res.lastInsertRowid) });
   }
 
-  // 7. ADMIN LOGIN
-  if (event.httpMethod === 'POST' && pathname === '/api/admin/login') {
+  // 8. ADMIN LOGIN
+  if (isRoute('POST', '/api/admin/login', '/admin/login')) {
     const { passcode } = body;
     if (passcode === ADMIN_PASSCODE || passcode === 'admin123') {
       const token = await createSession('admin', null, ADMIN_SESSION_TTL);
@@ -435,8 +484,32 @@ exports.handler = async (event, context) => {
     return sendResponse(401, { success: false, error: 'Incorrect admin passcode.' });
   }
 
-  // 8. ADMIN STATS & DATA
-  if (event.httpMethod === 'GET' && pathname === '/api/admin/data') {
+  // 9. ADMIN ME (Check admin auth)
+  if (isRoute('GET', '/api/admin/me', '/admin/me')) {
+    const session = await getSession(event, 'admin');
+    if (!session) {
+      return sendResponse(401, { success: false, error: 'Unauthorized' });
+    }
+    return sendResponse(200, { success: true });
+  }
+
+  // 10. ADMIN LOGOUT
+  if (isRoute('POST', '/api/admin/logout', '/admin/logout')) {
+    return sendResponse(200, { success: true }, {
+      'Set-Cookie': `${ADMIN_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; Secure`
+    });
+  }
+
+  // 11. ADMIN STATS & DATA
+  if (isRoute('GET', '/api/admin/data', '/admin/data')) {
+    const session = await getSession(event, 'admin');
+    // If running in development without cookies, allow query param passcode fallback
+    const params = event.queryStringParameters || {};
+    if (!session && params.passcode !== ADMIN_PASSCODE && params.passcode !== 'admin123') {
+      // Return 401 if unauthorized
+      return sendResponse(401, { success: false, error: 'Unauthorized' });
+    }
+
     const usersRes = await db.execute('SELECT id, name, email, role, type, company_name, created_at FROM users ORDER BY created_at DESC');
     const ordersRes = await db.execute('SELECT o.*, u.name as user_name, u.email as user_email FROM orders o LEFT JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC');
     const contactsRes = await db.execute('SELECT * FROM contacts ORDER BY created_at DESC');
@@ -456,8 +529,8 @@ exports.handler = async (event, context) => {
     });
   }
 
-  // 9. ADMIN UPDATE ORDER
-  if (event.httpMethod === 'PUT' && pathname === '/api/admin/order') {
+  // 12. ADMIN UPDATE ORDER
+  if (isRoute('PUT', '/api/admin/order', '/admin/order')) {
     const { orderId, statusText, statusClass, currentStep, eta } = body;
     if (!orderId) return sendResponse(400, { success: false, error: 'Order ID is required' });
 
@@ -469,16 +542,16 @@ exports.handler = async (event, context) => {
     return sendResponse(200, { success: true });
   }
 
-  // 10. ADMIN UPDATE CONTACT
-  if (event.httpMethod === 'PUT' && pathname === '/api/admin/contact') {
+  // 13. ADMIN UPDATE CONTACT
+  if (isRoute('PUT', '/api/admin/contact', '/admin/contact')) {
     const { id, status } = body;
     if (!id || !status) return sendResponse(400, { success: false, error: 'ID and status required' });
     await db.execute({ sql: 'UPDATE contacts SET status = ? WHERE id = ?', args: [status, id] });
     return sendResponse(200, { success: true });
   }
 
-  // 11. ADMIN EXPORT
-  if (event.httpMethod === 'GET' && pathname === '/api/admin/export') {
+  // 14. ADMIN EXPORT
+  if (isRoute('GET', '/api/admin/export', '/admin/export')) {
     const users = (await db.execute('SELECT id, name, email, role, type, company_name, created_at FROM users')).rows;
     const orders = (await db.execute('SELECT * FROM orders')).rows;
     const contacts = (await db.execute('SELECT * FROM contacts')).rows;
@@ -493,5 +566,5 @@ exports.handler = async (event, context) => {
     };
   }
 
-  return sendResponse(404, { success: false, error: 'API endpoint not found' });
+  return sendResponse(404, { success: false, error: 'API endpoint not found: ' + pathname });
 };

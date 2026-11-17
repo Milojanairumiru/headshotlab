@@ -1268,14 +1268,29 @@
     }
 
     async function init() {
-      // Drop any legacy profile (including demo data) cached by older builds.
-      localStorage.removeItem('headshotlab_current_user');
       const user = await loadSession();
       if (user) {
         currentUser = user;
+        try {
+          localStorage.setItem('headshotlab_current_user', JSON.stringify(user));
+        } catch (e) {}
         renderDashboard(user);
         return;
       }
+
+      // Fallback: check if active user session was saved in localStorage
+      try {
+        const cached = localStorage.getItem('headshotlab_current_user');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && parsed.email) {
+            currentUser = parsed;
+            renderDashboard(parsed);
+            return;
+          }
+        }
+      } catch (e) {}
+
       renderAuthView();
     }
 
@@ -1374,6 +1389,9 @@
     function loginUser(user) {
       if (!user) return;
       currentUser = user;
+      try {
+        localStorage.setItem('headshotlab_current_user', JSON.stringify(user));
+      } catch (e) {}
       showToast(`Welcome back, ${user.name}!`);
       renderDashboard(user);
     }
@@ -1384,6 +1402,7 @@
       } catch (err) {
         // The local view is cleared regardless.
       }
+      localStorage.removeItem('headshotlab_current_user');
       currentUser = null;
       showToast('You have signed out.');
       renderAuthView();
